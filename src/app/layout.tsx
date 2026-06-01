@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Jost } from "next/font/google";
-import { ClerkProvider, Show, UserButton } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import Link from "next/link";
-import Image from "next/image";
 import { extractRouterConfig } from "uploadthing/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
@@ -39,42 +37,9 @@ export default async function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body className={`${jost.variable} antialiased text-black bg-white font-sans`} suppressHydrationWarning>
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-          <header className="flex items-center justify-between p-3 border-b border-gray-200 sticky top-0 bg-white z-50">
-            <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center gap-2">
-                <Image src="/icon.png" alt="BrickByBrick Logo" width={32} height={32} className="w-8 h-8" />
-                <span className="font-bold text-lg">BrickByBrick</span>
-              </Link>
-              <nav className="hidden md:flex items-center gap-4 text-sm font-medium">
-                <Link href="/courses" className="hover:text-orange-600">Catalog</Link>
-                <Link href="/contact" className="hover:text-orange-600">Contact</Link>
-                {userId && (
-                  <>
-                    <Link href="/student-portal/dashboard" className="hover:text-orange-600">Dashboard</Link>
-                    <Link href="/student-portal/announcements" className="hover:text-orange-600">Announcements</Link>
-                    <Link href="/student-portal/profile" className="hover:text-orange-600">Profile</Link>
-                  </>
-                )}
-                {isAdmin && (
-                  <Link href="/admin" className="hover:text-orange-600 font-bold">Admin</Link>
-                )}
-              </nav>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Show when="signed-out">
-                <Link href="/sign-in" className="px-3 py-1.5 text-xs font-bold uppercase border border-gray-200 hover:bg-gray-100">
-                  Sign In
-                </Link>
-                <Link href="/sign-up" className="px-3 py-1.5 text-xs font-bold uppercase bg-black text-white hover:bg-gray-800">
-                  Sign Up
-                </Link>
-              </Show>
-              <Show when="signed-in">
-                <UserButton />
-              </Show>
-            </div>
-          </header>
-          <MainLayoutClient>{children}</MainLayoutClient>
+          <MainLayoutClient userId={userId} isAdmin={isAdmin}>
+            {children}
+          </MainLayoutClient>
         </body>
       </html>
     </ClerkProvider>

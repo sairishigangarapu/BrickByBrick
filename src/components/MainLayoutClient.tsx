@@ -1,59 +1,64 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Show, UserButton } from '@clerk/nextjs';
 
-const mainNavLinks = [
-  { href: '/', label: 'Home', icon: '🏠' },
-  { href: '/student-portal/dashboard', label: 'Dashboard', icon: '📊' },
-  { href: '/courses', label: 'Catalog', icon: '📚' },
-  { href: '/student-portal/announcements', label: 'News', icon: '📢' },
-  { href: '/student-portal/profile', label: 'Profile', icon: '👤' },
-];
+interface MainLayoutClientProps {
+  children: React.ReactNode;
+  userId: string | null;
+  isAdmin: boolean;
+}
 
-const adminNavLinks = [
-  { href: '/admin', label: 'Admin', icon: '⚙️' },
-];
-
-export default function MainLayoutClient({ children }: { children: React.ReactNode }) {
-  const { userId, isLoaded } = useAuth();
+export default function MainLayoutClient({ children, userId, isAdmin }: MainLayoutClientProps) {
   const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
-  useEffect(() => {
-    if (isLoaded && userId) {
-      const role = localStorage.getItem('userRole');
-      setIsAdmin(role === 'admin');
-    }
-  }, [isLoaded, userId]);
+  // Lesson player gets full screen — no header, no nav
+  const isLessonPage = pathname?.includes('/student-portal/learn/') && pathname.split('/').length >= 6;
 
-  const visibleLinks = [...mainNavLinks];
-  if (isAdmin) {
-    visibleLinks.push(...adminNavLinks);
+  if (isLessonPage) {
+    return <div className="h-screen overflow-hidden">{children}</div>;
   }
 
   return (
-    <div className="flex min-h-screen bg-brand-surface">
-      <div className="w-full">
-        {children}
-      </div>
-
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 px-2 z-30">
-        {visibleLinks.map(link => (
-          <Link 
-            key={link.href} 
-            href={link.href}
-            className={`text-xs text-center p-1 ${pathname === link.href || (link.href === '/' && pathname === '/') ? 'text-brand-primary' : 'text-gray-500'}`}
-          >
-            <div className="text-lg">{link.icon}</div>
-            <div className="text-[10px] truncate">{link.label}</div>
+    <div className="flex flex-col min-h-screen">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-50">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/icon.png" alt="BrickByBrick Logo" width={32} height={32} className="w-8 h-8" />
+            <span className="font-bold text-lg">BrickByBrick</span>
           </Link>
-        ))}
-      </nav>
+          <nav className="hidden md:flex items-center gap-4 text-sm font-medium">
+            <Link href="/courses" className="hover:text-orange-600">Catalog</Link>
+            <Link href="/contact" className="hover:text-orange-600">Contact</Link>
+            {userId && (
+              <>
+                <Link href="/student-portal/dashboard" className="hover:text-orange-600">Dashboard</Link>
+                <Link href="/student-portal/announcements" className="hover:text-orange-600">Announcements</Link>
+                <Link href="/student-portal/profile" className="hover:text-orange-600">Profile</Link>
+              </>
+            )}
+            {isAdmin && (
+              <Link href="/admin" className="font-bold hover:text-orange-600">Admin</Link>
+            )}
+          </nav>
+        </div>
+        <div className="flex gap-2 items-center">
+          <Show when="signed-out">
+            <Link href="/sign-in" className="px-3 py-1.5 text-xs font-bold uppercase border border-gray-200 hover:bg-gray-100">
+              Sign In
+            </Link>
+            <Link href="/sign-up" className="px-3 py-1.5 text-xs font-bold uppercase bg-black text-white hover:bg-gray-800">
+              Sign Up
+            </Link>
+          </Show>
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
+        </div>
+      </header>
+      <main className="flex-1">{children}</main>
     </div>
   );
 }
