@@ -1,24 +1,25 @@
 # BrickByBrick
 
-A comprehensive Learning Management System (LMS) platform designed for financial education and real estate investment training.
+A comprehensive Learning Management System (LMS) platform designed for financial education and real estate investment training. BrickByBrick provides institutional-grade tools for course delivery, student management, and educational content distribution.
 
-## 🎯 Overview
+## Overview
 
-BrickByBrick is a modern, secure LMS built with Next.js 15, featuring:
-- **Student Portal** - Course enrollment, lesson tracking, PDF viewer
-- **Admin Dashboard** - Course management, user management, progress tracking
-- **Authentication** - Powered by Clerk with role-based access control
-- **Secure Database** - Supabase with Row Level Security
-- **File Storage** - Supabase Storage for course content and PDFs
+BrickByBrick is an enterprise-ready LMS built with Next.js 15, enabling financial institutions and educational organizations to deliver comprehensive training programs. The platform features:
 
-## 🚀 Quick Start
+- **Student Portal** - Course enrollment, lesson tracking, and integrated PDF viewer
+- **Administrative Dashboard** - Complete course management, user administration, and progress analytics
+- **Enterprise Authentication** - Clerk-powered authentication with role-based access control
+- **Secure Infrastructure** - Supabase PostgreSQL with Row Level Security enforcement
+- **Content Management** - Secure file storage and delivery via Supabase Storage
 
-### Prerequisites
+## Getting Started
 
-- Node.js 18+ 
-- npm or yarn
-- Supabase account
-- Clerk account
+### System Requirements
+
+- Node.js 18 or later
+- npm or yarn package manager
+- Supabase account and project
+- Clerk authentication project
 
 ### Installation
 
@@ -33,9 +34,9 @@ cd BrickByBrick
 npm install
 ```
 
-3. Set up environment variables:
+3. Configure environment variables:
 
-Create a `.env.local` file with:
+Create a `.env.local` file with the following configuration:
 
 ```bash
 # Clerk Authentication
@@ -47,156 +48,156 @@ NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
 
-# Optional
+# Optional Services
 CLERK_WEBHOOK_SECRET=whsec_...
 UPLOADTHING_TOKEN=eyJ...
 ```
 
-4. Set up the database:
+4. Initialize the database:
 
-Go to your Supabase Dashboard → SQL Editor and run:
-- `supabase/schema.sql` - Creates all tables
-- `supabase/security-policies.sql` - Applies Row Level Security
+Execute the following SQL files in your Supabase SQL Editor:
+- `supabase/schema.sql` - Database schema and table creation
+- `supabase/security-policies.sql` - Row Level Security policy configuration
 
-5. Run the development server:
+5. Start the development server:
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the application.
+Access the application at [http://localhost:3000](http://localhost:3000).
 
-## 📚 Documentation
+## Documentation
 
-- **[SECURITY.md](./SECURITY.md)** - Complete security guide
-- **[SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)** - Pre-deployment checklist
-- **[DEPLOYMENT_READY.md](./DEPLOYMENT_READY.md)** - Deployment instructions
-- **[TROUBLESHOOTING_GUIDE.md](./TROUBLESHOOTING_GUIDE.md)** - Common issues and solutions
-- **[FEATURES_GUIDE.md](./FEATURES_GUIDE.md)** - Feature documentation
+- **[SECURITY.md](./SECURITY.md)** - Security architecture and best practices
+- **[SECURITY_CHECKLIST.md](./SECURITY_CHECKLIST.md)** - Pre-deployment security verification
+- **[DEPLOYMENT_READY.md](./DEPLOYMENT_READY.md)** - Production deployment guide
+- **[TROUBLESHOOTING_GUIDE.md](./TROUBLESHOOTING_GUIDE.md)** - Common issues and resolutions
+- **[FEATURES_GUIDE.md](./FEATURES_GUIDE.md)** - Feature documentation and usage
 
-## 🔒 Security Features
+## Security
 
-- ✅ Row Level Security on all database tables
-- ✅ Role-based access control (Admin/Student)
-- ✅ Server-side authentication checks
-- ✅ Secure file storage with proper access policies
-- ✅ No console logs or debug endpoints in production
-- ✅ Environment variable validation
+BrickByBrick implements enterprise-grade security controls:
 
-## 🏗️ Tech Stack
+- Row Level Security on all database tables
+- Role-based access control (Administrator/Student)
+- Server-side authentication and authorization verification
+- Secure file storage with access control policies
+- Production-ready environment configuration
+- Environment variable validation and sanitization
 
-- **Framework**: Next.js 15 (App Router)
-- **Authentication**: Clerk
-- **Database**: Supabase (PostgreSQL)
-- **Storage**: Supabase Storage
-- **Styling**: Tailwind CSS
-- **PDF Viewer**: react-pdf
-- **Rich Text Editor**: Tiptap
-- **Deployment**: Vercel
+## Technology Stack
 
-## 📦 Project Structure
+| Component | Technology |
+|-----------|-----------|
+| Framework | Next.js 15 (App Router) |
+| Authentication | Clerk |
+| Database | Supabase (PostgreSQL) |
+| Storage | Supabase Storage |
+| Styling | Tailwind CSS |
+| PDF Rendering | react-pdf |
+| Rich Text Editor | Tiptap |
+| Deployment | Vercel |
+| Primary Language | TypeScript |
+
+## Architecture
 
 ```
 BrickByBrick/
 ├── src/
 │   ├── app/
-│   │   ├── (admin)/          # Admin dashboard routes
-│   │   ├── (public)/          # Public pages
-│   │   ├── student-portal/    # Student portal routes
-│   │   ├── api/               # API routes
-│   │   └── actions/           # Server actions
+│   │   ├── (admin)/              # Administrative interfaces
+│   │   ├── (public)/              # Public pages
+│   │   ├── student-portal/        # Student interfaces
+│   │   ├── api/                   # API endpoints
+│   │   └── actions/               # Server-side actions
 │   ├── components/
-│   │   ├── admin/             # Admin components
-│   │   ├── learn/             # Learning components
-│   │   ├── auth/              # Auth components
-│   │   └── ui/                # UI components
-│   └── lib/                   # Utilities and configs
+│   │   ├── admin/                 # Admin UI components
+│   │   ├── learn/                 # Learning components
+│   │   ├── auth/                  # Authentication components
+│   │   └── ui/                    # Reusable UI components
+│   └── lib/                       # Utilities and configurations
 ├── supabase/
-│   ├── schema.sql             # Database schema
-│   └── security-policies.sql  # RLS policies
-└── public/                    # Static assets
+│   ├── schema.sql                 # Database schema
+│   └── security-policies.sql      # RLS policy definitions
+└── public/                        # Static assets
 ```
 
-## 🎓 Features
+## Capabilities
 
-### For Students
-- Browse and enroll in courses
-- Track lesson progress with checkboxes
-- View PDF lessons with zoom and navigation
-- Access course announcements
-- Contact support
+### Student Features
+- Course discovery and enrollment
+- Lesson progress tracking
+- PDF lesson viewing with zoom and navigation controls
+- Course announcements and updates
+- Direct support communication
 
-### For Admins
-- Create and manage courses
-- Build curriculum with modules and lessons
-- Upload PDFs and videos
-- Track student progress
-- Manage user roles
-- Respond to contact messages
+### Administrative Features
+- Course creation and lifecycle management
+- Curriculum structure management (modules and lessons)
+- Course content upload and organization
+- Student progress monitoring and analytics
+- User role and permission management
+- Support ticket management and response
 
-## 🚀 Deployment
+## Production Deployment
 
-### Deploy to Vercel
+### Deployment to Vercel
 
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables
-4. Deploy
+1. Push code to GitHub repository
+2. Import project into Vercel dashboard
+3. Configure environment variables
+4. Deploy to production
 
-### Important: Apply RLS Policies
+### Security Configuration
 
-Before going live, you MUST apply the security policies:
+Prior to production deployment, Row Level Security policies must be applied:
 
-1. Go to Supabase Dashboard → SQL Editor
-2. Copy contents of `supabase/security-policies.sql`
-3. Run the SQL script
-4. Verify no errors
+1. Access Supabase Dashboard > SQL Editor
+2. Execute the contents of `supabase/security-policies.sql`
+3. Verify successful execution without errors
 
-See [DEPLOYMENT_READY.md](./DEPLOYMENT_READY.md) for detailed instructions.
+Refer to [DEPLOYMENT_READY.md](./DEPLOYMENT_READY.md) for complete deployment instructions.
 
-## 🧪 Testing
+## Build and Test
 
 ```bash
-# Run development server
+# Development server
 npm run dev
 
-# Build for production
+# Production build
 npm run build
 
-# Start production server
+# Production server
 npm run start
 ```
 
-## 📝 Environment Variables
+## Configuration
 
-See `.env.example` for all required environment variables.
+Complete environment variable documentation is available in `.env.example`.
 
-**Important**: Never commit `.env.local` or expose service role keys to the client.
+**Security Notice**: Do not commit `.env.local` to version control or expose service role keys to client-side code.
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+3. Implement changes
+4. Perform comprehensive testing
+5. Submit a pull request for review
 
-## 📄 License
+## License
 
 This project is private and proprietary.
 
-## 🆘 Support
+## Support and Resources
 
-For issues or questions:
-- Check [TROUBLESHOOTING_GUIDE.md](./TROUBLESHOOTING_GUIDE.md)
-- Review [SECURITY.md](./SECURITY.md)
-- Open an issue on GitHub
+For technical assistance:
+- Review [TROUBLESHOOTING_GUIDE.md](./TROUBLESHOOTING_GUIDE.md) for known issues and solutions
+- Consult [SECURITY.md](./SECURITY.md) for security-related questions
+- Open an issue on GitHub for bug reports or feature requests
 
-## 🔗 Links
+## Resources
 
-- [Live Demo](https://brickbybrick.vercel.app) (Coming soon)
-- [Documentation](./FEATURES_GUIDE.md)
-- [Security Guide](./SECURITY.md)
-
----
-
-Built with ❤️ for financial education
+- Live Application: [https://brickbybrick.vercel.app](https://brickbybrick.vercel.app)
+- Feature Documentation: [FEATURES_GUIDE.md](./FEATURES_GUIDE.md)
+- Security Documentation: [SECURITY.md](./SECURITY.md)
