@@ -34,3 +34,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Environment
+
+Create an `.env.local` file with the following keys so API clients can read/write data:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=<your-supabase-url>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+CLERK_PUBLISHABLE_KEY=<your-clerk-publishable-key>
+CLERK_SECRET_KEY=<your-clerk-secret-key>
+UPLOADTHING_TOKEN=<uploadthing-api-token>
+```
+
+UploadThing powers course thumbnail uploads. Generate an API token in the UploadThing dashboard and paste it into `UPLOADTHING_TOKEN` before running `npm run dev`.
+
+## Database
+
+The `supabase/schema.sql` file now tracks `price` and `is_paid` columns for the `courses` table. Apply the DDL to your Supabase project (or run an equivalent migration) before creating courses, otherwise inserts will fail.

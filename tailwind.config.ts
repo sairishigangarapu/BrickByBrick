@@ -9,9 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#FFFFFF",
+        foreground: "#0A0A0A",
+        brand: {
+          primary: "#CC5500", // Burnt Orange
+          surface: "#F5F5F5",
+        }
       },
+      fontFamily: {
+        sans: ["var(--font-jost)", "sans-serif"],
+        mono: ["monospace"],
+      },
+      borderWidth: {
+        '1': '1px',
+      }
     },
   },
   plugins: [],
