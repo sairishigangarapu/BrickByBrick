@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 
 const isPublicRoute = createRouteMatcher([
   '/',
@@ -12,10 +13,17 @@ const isPublicRoute = createRouteMatcher([
 ])
 
 export default clerkMiddleware(async (auth, request) => {
+  // Inject pathname as a header so server layouts can read it without client-side flash
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-pathname', request.nextUrl.pathname)
+
   if (isPublicRoute(request)) {
-    return
+    return NextResponse.next({ request: { headers: requestHeaders } })
   }
+
   await auth.protect()
+
+  return NextResponse.next({ request: { headers: requestHeaders } })
 })
 
 export const config = {
