@@ -1,7 +1,7 @@
 'use server';
 
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getServerSupabase } from '@/lib/server-supabase';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { ensureSupabaseUser } from '@/lib/ensure-supabase-user';
@@ -19,7 +19,9 @@ export async function enrollInCourseAction(courseId: string) {
 
   await ensureSupabaseUser(user);
 
-  const { data: dbUser, error: userError } = await supabaseAdmin
+  const supabase = await getServerSupabase();
+
+  const { data: dbUser, error: userError } = await supabase
     .from('users')
     .select('id')
     .eq('clerk_id', userId)
@@ -29,7 +31,7 @@ export async function enrollInCourseAction(courseId: string) {
     throw new Error('User profile not found. Please contact support.');
   }
 
-  const { data: existingEnrollment } = await supabaseAdmin
+  const { data: existingEnrollment } = await supabase
     .from('enrollments')
     .select('id')
     .eq('user_id', dbUser.id)
@@ -40,7 +42,7 @@ export async function enrollInCourseAction(courseId: string) {
     throw new Error('You are already enrolled in this course.');
   }
 
-  const { error: enrollError } = await supabaseAdmin.from('enrollments')
+  const { error: enrollError } = await supabase.from('enrollments')
     .insert({
       user_id: dbUser.id,
       course_id: courseId,
@@ -52,7 +54,7 @@ export async function enrollInCourseAction(courseId: string) {
 
   revalidatePath('/dashboard');
   revalidatePath(`/courses/${courseId}`);
-  redirect(`/learn/${courseId}`);
+  redirect(`/student-portal/learn/${courseId}`);
 }
 
 export async function checkEnrollmentStatus(courseId: string): Promise<boolean> {
@@ -61,7 +63,9 @@ export async function checkEnrollmentStatus(courseId: string): Promise<boolean> 
     return false;
   }
 
-  const { data: dbUser } = await supabaseAdmin
+  const supabase = await getServerSupabase();
+
+  const { data: dbUser } = await supabase
     .from('users')
     .select('id')
     .eq('clerk_id', userId)
@@ -71,7 +75,7 @@ export async function checkEnrollmentStatus(courseId: string): Promise<boolean> 
     return false;
   }
 
-  const { data: enrollment } = await supabaseAdmin
+  const { data: enrollment } = await supabase
     .from('enrollments')
     .select('id')
     .eq('user_id', dbUser.id)

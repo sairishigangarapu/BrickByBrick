@@ -1,11 +1,11 @@
 import React from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { revalidatePath } from 'next/cache';
 
 export default async function AdminAnnouncementsPage() {
-  const { data: announcements } = await supabase
+  const { data: announcements } = await supabaseAdmin
     .from('announcements')
     .select('*')
     .order('created_at', { ascending: false });
@@ -16,7 +16,7 @@ export default async function AdminAnnouncementsPage() {
     const content = formData.get('content') as string;
 
     if (title && content) {
-      await supabase.from('announcements').insert({ title, content });
+      await supabaseAdmin.from('announcements').insert({ title, body: content });
       revalidatePath('/admin/announcements');
     }
   }
@@ -44,7 +44,7 @@ export default async function AdminAnnouncementsPage() {
             {announcements?.map(ann => (
                 <div key={ann.id} className="p-4 border border-gray-200 bg-brand-surface text-sm">
                     <div className="font-bold">{ann.title}</div>
-                    <div className="text-gray-600 truncate">{ann.content}</div>
+                    <div className="text-gray-600 truncate">{ann.body}</div>
                 </div>
             ))}
         </div>

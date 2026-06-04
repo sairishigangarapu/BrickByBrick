@@ -380,6 +380,32 @@ WITH CHECK (
   )
 );
 
+-- Admins can update course thumbnails
+CREATE POLICY "Admins can update course thumbnails"
+ON storage.objects FOR UPDATE
+TO authenticated
+USING (
+  bucket_id = 'course-thumbnails'
+  AND EXISTS (
+    SELECT 1 FROM users
+    WHERE clerk_id = auth.jwt() ->> 'sub'
+    AND role = 'admin'
+  )
+);
+
+-- Admins can delete course thumbnails
+CREATE POLICY "Admins can delete course thumbnails"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (
+  bucket_id = 'course-thumbnails'
+  AND EXISTS (
+    SELECT 1 FROM users
+    WHERE clerk_id = auth.jwt() ->> 'sub'
+    AND role = 'admin'
+  )
+);
+
 -- Lesson content: Public read, admin write
 CREATE POLICY "Public can view lesson content"
 ON storage.objects FOR SELECT
@@ -390,6 +416,32 @@ CREATE POLICY "Admins can upload lesson content"
 ON storage.objects FOR INSERT
 TO authenticated
 WITH CHECK (
+  bucket_id = 'lesson-content'
+  AND EXISTS (
+    SELECT 1 FROM users
+    WHERE clerk_id = auth.jwt() ->> 'sub'
+    AND role = 'admin'
+  )
+);
+
+-- Admins can update lesson content
+CREATE POLICY "Admins can update lesson content"
+ON storage.objects FOR UPDATE
+TO authenticated
+USING (
+  bucket_id = 'lesson-content'
+  AND EXISTS (
+    SELECT 1 FROM users
+    WHERE clerk_id = auth.jwt() ->> 'sub'
+    AND role = 'admin'
+  )
+);
+
+-- Admins can delete lesson content
+CREATE POLICY "Admins can delete lesson content"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (
   bucket_id = 'lesson-content'
   AND EXISTS (
     SELECT 1 FROM users

@@ -2,6 +2,7 @@
 
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { supabaseAdmin } from '@/lib/supabase';
+import { getServerSupabase } from '@/lib/server-supabase';
 import { ensureSupabaseUser } from '@/lib/ensure-supabase-user';
 
 export async function toggleLessonCompletion(lessonId: string, courseId: string, isCompleted: boolean) {
@@ -15,8 +16,10 @@ export async function toggleLessonCompletion(lessonId: string, courseId: string,
     const clerkUser = await currentUser();
     await ensureSupabaseUser(clerkUser);
 
+    const supabase = await getServerSupabase();
+
     // Get Supabase user ID
-    const { data: supabaseUser } = await supabaseAdmin
+    const { data: supabaseUser } = await supabase
       .from('users')
       .select('id')
       .eq('clerk_id', userId)
@@ -27,7 +30,7 @@ export async function toggleLessonCompletion(lessonId: string, courseId: string,
     }
 
     // Check if progress record exists
-    const { data: existing } = await supabaseAdmin
+    const { data: existing } = await supabase
       .from('lesson_progress')
       .select('id')
       .eq('user_id', supabaseUser.id)
@@ -36,7 +39,7 @@ export async function toggleLessonCompletion(lessonId: string, courseId: string,
 
     if (existing) {
       // Update existing record
-      const { error } = await supabaseAdmin
+      const { error } = await supabase
         .from('lesson_progress')
         .update({
           is_completed: isCompleted,
@@ -47,7 +50,7 @@ export async function toggleLessonCompletion(lessonId: string, courseId: string,
       if (error) throw error;
     } else {
       // Create new record
-      const { error } = await supabaseAdmin
+      const { error } = await supabase
         .from('lesson_progress')
         .insert({
           user_id: supabaseUser.id,
@@ -73,12 +76,14 @@ export async function getLessonProgress(courseId: string) {
       return { success: false, completedLessons: [] };
     }
 
+    const supabase = await getServerSupabase();
+
     // Get Clerk user and ensure exists in Supabase
     const clerkUser = await currentUser();
     await ensureSupabaseUser(clerkUser);
 
     // Get Supabase user ID
-    const { data: supabaseUser } = await supabaseAdmin
+    const { data: supabaseUser } = await supabase
       .from('users')
       .select('id')
       .eq('clerk_id', userId)
@@ -88,7 +93,7 @@ export async function getLessonProgress(courseId: string) {
       return { success: false, completedLessons: [] };
     }
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from('lesson_progress')
       .select('lesson_id, is_completed')
       .eq('user_id', supabaseUser.id)

@@ -1,9 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
 import React from 'react';
-import { supabase } from '@/lib/supabase';
+import { getServerSupabase } from '@/lib/server-supabase';
 import { Badge } from '@/components/ui/Badge';
 
 export default async function AnnouncementsPage() {
+  const supabase = await getServerSupabase();
   const { data: announcements } = await supabase
     .from('announcements')
     .select('*')
@@ -20,7 +21,7 @@ export default async function AnnouncementsPage() {
                 <div key={ann.id} className="p-6 border border-brand-primary bg-white shadow-sm">
                     <Badge className="mb-3" variant="secondary">Update</Badge>
                     <h2 className="text-2xl font-bold">{ann.title}</h2>
-                    <p className="text-gray-600 mt-2 leading-relaxed">{ann.content}</p>
+                    <p className="text-gray-600 mt-2 leading-relaxed">{ann.body}</p>
                     <div className="text-xs text-gray-400 mt-4 uppercase tracking-wider">{new Date(ann.created_at).toLocaleDateString()}</div>
                 </div>
             ))

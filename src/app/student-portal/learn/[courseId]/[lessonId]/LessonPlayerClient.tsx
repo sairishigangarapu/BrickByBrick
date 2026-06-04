@@ -33,17 +33,17 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
   if (lesson.content_type === 'pdf') {
     if (!lesson.content_url) {
       return (
-        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+        <div className="w-full flex items-center justify-center bg-gray-100 py-20">
           <div className="text-center text-gray-600 p-8">
             <p className="text-lg font-medium">No PDF uploaded</p>
-            <p className="text-sm mt-2">This lesson doesn't have content yet.</p>
+            <p className="text-sm mt-2">This lesson doesn&apos;t have content yet.</p>
           </div>
         </div>
       );
     }
     
     return (
-      <div className="w-full h-full bg-gray-100">
+      <div className="w-full bg-gray-100">
         <PDFViewer url={lesson.content_url} title={lesson.title} />
       </div>
     );
@@ -51,13 +51,12 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
   
   if (lesson.content_type === 'video') {
     return (
-      <div className="w-full h-full bg-black flex items-center justify-center">
+      <div className="w-full bg-black flex items-center justify-center">
         {lesson.content_url ? (
           <video 
             src={lesson.content_url} 
             controls 
-            className="w-full h-full"
-            style={{ maxHeight: '100%', maxWidth: '100%' }}
+            className="w-full max-h-[75vh]"
           >
             Your browser does not support the video tag.
           </video>
@@ -72,7 +71,7 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
   
   if (lesson.content_type === 'text') {
     return (
-      <div className="w-full h-full overflow-auto bg-white p-8">
+      <div className="w-full overflow-auto bg-white p-8">
         <div 
           className="prose max-w-4xl mx-auto"
           dangerouslySetInnerHTML={{ __html: lesson.content_url || '<p>No content yet.</p>' }}
@@ -82,7 +81,7 @@ function LessonContent({ lesson }: { lesson: Lesson }) {
   }
   
   return (
-    <div className="w-full h-full flex items-center justify-center bg-gray-100">
+    <div className="w-full flex items-center justify-center bg-gray-100 py-20">
       <div className="text-center text-gray-600 p-8">
         <p className="text-lg">Unknown content type: {lesson.content_type}</p>
       </div>
@@ -133,9 +132,9 @@ export default function LessonPlayerClient({
   const isCompleted = completedLessons.includes(currentLesson.id);
 
   return (
-    <div className="flex flex-col h-screen bg-black">
+    <div className="min-h-screen bg-black">
       {/* Top Header */}
-      <header className="bg-black border-b border-gray-800 px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-black border-b border-gray-800 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.push('/student-portal/dashboard')}
@@ -179,10 +178,10 @@ export default function LessonPlayerClient({
       </header>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex">
         {/* Video/PDF Player */}
         <div className="flex-1 flex flex-col bg-black">
-          <div className="flex-1 relative">
+          <div>
             <LessonContent lesson={currentLesson} />
           </div>
           
@@ -197,7 +196,7 @@ export default function LessonPlayerClient({
 
         {/* Right Sidebar - Course Content */}
         {sidebarOpen && (
-          <aside className="w-96 bg-white border-l border-gray-200 flex flex-col overflow-hidden">
+          <aside className="w-96 bg-white border-l border-gray-200 flex flex-col sticky top-14 h-[calc(100vh-3.5rem)] overflow-hidden">
             <div className="p-4 border-b border-gray-200">
               <h3 className="font-bold text-lg">Course content</h3>
             </div>

@@ -82,7 +82,7 @@ export default async function RootLayout({
               </div>
             </header>
           )}
-          <main className={isLessonPage ? 'h-screen overflow-hidden' : ''}>
+          <main>
             {children}
           </main>
         </body>

@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getServerSupabase } from '@/lib/server-supabase';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/Progress';
 import Link from 'next/link';
@@ -12,8 +12,10 @@ export default async function StudentDashboardPage() {
   const { userId } = await auth();
   if (!userId) redirect('/sign-in');
 
+  const supabase = await getServerSupabase();
+
   // 1. Fetch user UUID from Supabase via Clerk ID
-  const { data: userData } = await supabaseAdmin
+  const { data: userData } = await supabase
     .from('users')
     .select('id')
     .eq('clerk_id', userId)
@@ -23,7 +25,7 @@ export default async function StudentDashboardPage() {
 
   if (userData?.id) {
     // 2. Fetch enrollments for the user, joining with courses
-    const { data: enrollments } = await supabaseAdmin
+    const { data: enrollments } = await supabase
       .from('enrollments')
       .select(`
         id,
@@ -41,7 +43,7 @@ export default async function StudentDashboardPage() {
       const coursesWithFirstLesson = await Promise.all(
         enrollments.map(async (e) => {
           // Get first module and first lesson
-          const { data: modules } = await supabaseAdmin
+          const { data: modules } = await supabase
             .from('modules')
             .select('id, lessons(id, order_index)')
             .eq('course_id', e.course_id)

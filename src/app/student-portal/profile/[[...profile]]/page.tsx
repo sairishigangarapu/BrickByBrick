@@ -1,6 +1,6 @@
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getServerSupabase } from '@/lib/server-supabase';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Progress } from '@/components/ui/Progress';
@@ -13,13 +13,15 @@ export default async function ProfilePage() {
   const user = await currentUser();
   if (!user) redirect('/sign-in');
 
-  const { data: dbUser } = await supabaseAdmin
+  const supabase = await getServerSupabase();
+
+  const { data: dbUser } = await supabase
     .from('users')
     .select('*')
     .eq('clerk_id', userId)
     .single();
 
-  const { data: enrollments } = await supabaseAdmin
+  const { data: enrollments } = await supabase
     .from('enrollments')
     .select(`
       id,
@@ -34,7 +36,7 @@ export default async function ProfilePage() {
     `)
     .eq('user_id', dbUser?.id);
 
-  const { data: certificates } = await supabaseAdmin
+  const { data: certificates } = await supabase
     .from('certificates')
     .select(`
       id,

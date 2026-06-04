@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(request: Request) {
@@ -9,6 +9,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const clerkUser = await currentUser();
+  if (clerkUser?.publicMetadata?.role !== 'admin') {
+    return NextResponse.json({ error: 'Forbidden. Admin access required.' }, { status: 403 });
+  }
+
   if (!supabaseAdmin) {
     return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
   }
@@ -16,8 +21,8 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
-    const type = formData.get('type') as string; // 'thumbnail' or 'lesson'
-    const folder = formData.get('folder') as string; // folder path
+    const type = formData.get('type') as string;
+    const folder = formData.get('folder') as string;
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });

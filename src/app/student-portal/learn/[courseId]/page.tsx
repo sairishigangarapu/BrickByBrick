@@ -1,7 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import { supabase } from '@/lib/supabase';
+import { getServerSupabase } from '@/lib/server-supabase';
 
 export default async function LearnCoursePage({ params }: { params: Promise<{ courseId: string }> }) {
   const { courseId } = await params;
@@ -10,6 +10,8 @@ export default async function LearnCoursePage({ params }: { params: Promise<{ co
   if (!userId) {
     redirect('/sign-in');
   }
+
+  const supabase = await getServerSupabase();
 
   const { data: dbUser } = await supabase
     .from('users')

@@ -10,15 +10,16 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Client for browser/public operations
+// Anon key client for public/browser operations (unauthenticated)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Admin client for server-side operations (bypasses RLS)
-export const supabaseAdmin = supabaseServiceKey 
+// Service role client for admin-only server actions (bypasses RLS)
+// Only use in server actions/pages that explicitly check for admin role
+export const supabaseAdmin = supabaseServiceKey
   ? createClient(supabaseUrl, supabaseServiceKey, {
       auth: {
         autoRefreshToken: false,
-        persistSession: false
-      }
+        persistSession: false,
+      },
     })
-  : supabase; // Fallback to regular client if service key not available
+  : supabase;
