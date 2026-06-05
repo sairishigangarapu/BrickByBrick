@@ -158,7 +158,7 @@ export function InvestmentCalculator() {
         </div>
       </div>
 
-      <div className="h-80">
+      <div className="h-80" style={{ minHeight: '320px' }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />

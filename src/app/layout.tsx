@@ -31,9 +31,16 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { userId } = await auth();
-  const user = await currentUser();
-  const isAdmin = user?.publicMetadata?.role === 'admin';
+  let userId: string | null = null;
+  let isAdmin = false;
+  try {
+    const authResult = await auth();
+    userId = authResult.userId;
+    const user = await currentUser();
+    isAdmin = user?.publicMetadata?.role === 'admin';
+  } catch {
+    // Not signed in - safe defaults
+  }
 
   // Detect lesson player route server-side — no client flash
   const headersList = await headers();
