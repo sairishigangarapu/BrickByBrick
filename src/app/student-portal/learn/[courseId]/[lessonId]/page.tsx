@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import { getServerSupabase } from '@/lib/server-supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 import LessonPlayerClient from './LessonPlayerClient';
 import { getLessonProgress } from '@/app/actions/lesson-progress';
 
@@ -14,10 +14,8 @@ export default async function LessonPlayerPage({
 
   const { courseId, lessonId } = await params;
 
-  const supabase = await getServerSupabase();
-
   // Load course info
-  const { data: courseData } = await supabase
+  const { data: courseData } = await supabaseAdmin
     .from('courses')
     .select('title')
     .eq('id', courseId)
@@ -28,7 +26,7 @@ export default async function LessonPlayerPage({
   }
 
   // Load modules and lessons
-  const { data: modulesData } = await supabase
+  const { data: modulesData } = await supabaseAdmin
     .from('modules')
     .select('id, title, order_index, lessons(id, title, content_type, content_url, order_index)')
     .eq('course_id', courseId)

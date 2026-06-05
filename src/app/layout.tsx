@@ -6,7 +6,6 @@ import { extractRouterConfig } from "uploadthing/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import Link from "next/link";
-import Image from "next/image";
 import { Show, UserButton } from "@clerk/nextjs";
 
 import { ourFileRouter } from "./api/uploadthing/core";
@@ -56,7 +55,7 @@ export default async function RootLayout({
             <header className="flex items-center justify-between px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-50">
               <div className="flex items-center gap-6">
                 <Link href="/" className="flex items-center gap-2">
-                  <Image src="/icon.png" alt="BrickByBrick Logo" width={32} height={32} className="w-8 h-8" />
+                  <img src="/icon.png" alt="BrickByBrick Logo" width={32} height={32} className="w-8 h-8" />
                   <span className="font-bold text-lg">BrickByBrick</span>
                 </Link>
                 <nav className="hidden md:flex items-center gap-4 text-sm font-medium">

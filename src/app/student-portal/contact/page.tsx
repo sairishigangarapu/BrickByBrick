@@ -2,16 +2,14 @@
 
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { getServerSupabase } from '@/lib/server-supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 import ContactForm from '@/components/contact/ContactForm';
 
 export default async function ContactPage() {
   const { userId } = await auth();
   if (!userId) redirect('/sign-in');
 
-  const supabase = await getServerSupabase();
-
-  const { data: user } = await supabase
+  const { data: user } = await supabaseAdmin
     .from('users')
     .select('id, email, full_name')
     .eq('clerk_id', userId)

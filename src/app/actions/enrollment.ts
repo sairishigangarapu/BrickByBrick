@@ -1,7 +1,7 @@
 'use server';
 
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { getServerSupabase } from '@/lib/server-supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { ensureSupabaseUser } from '@/lib/ensure-supabase-user';
@@ -19,9 +19,7 @@ export async function enrollInCourseAction(courseId: string) {
 
   await ensureSupabaseUser(user);
 
-  const supabase = await getServerSupabase();
-
-  const { data: dbUser, error: userError } = await supabase
+  const { data: dbUser, error: userError } = await supabaseAdmin
     .from('users')
     .select('id')
     .eq('clerk_id', userId)
@@ -31,7 +29,7 @@ export async function enrollInCourseAction(courseId: string) {
     throw new Error('User profile not found. Please contact support.');
   }
 
-  const { data: existingEnrollment } = await supabase
+  const { data: existingEnrollment } = await supabaseAdmin
     .from('enrollments')
     .select('id')
     .eq('user_id', dbUser.id)
@@ -42,7 +40,7 @@ export async function enrollInCourseAction(courseId: string) {
     throw new Error('You are already enrolled in this course.');
   }
 
-  const { error: enrollError } = await supabase.from('enrollments')
+  const { error: enrollError } = await supabaseAdmin.from('enrollments')
     .insert({
       user_id: dbUser.id,
       course_id: courseId,
@@ -63,9 +61,7 @@ export async function checkEnrollmentStatus(courseId: string): Promise<boolean> 
     return false;
   }
 
-  const supabase = await getServerSupabase();
-
-  const { data: dbUser } = await supabase
+  const { data: dbUser } = await supabaseAdmin
     .from('users')
     .select('id')
     .eq('clerk_id', userId)
@@ -75,7 +71,7 @@ export async function checkEnrollmentStatus(courseId: string): Promise<boolean> 
     return false;
   }
 
-  const { data: enrollment } = await supabase
+  const { data: enrollment } = await supabaseAdmin
     .from('enrollments')
     .select('id')
     .eq('user_id', dbUser.id)

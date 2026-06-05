@@ -1,11 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
 import React from 'react';
-import { getServerSupabase } from '@/lib/server-supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 import { Badge } from '@/components/ui/Badge';
 
 export default async function AnnouncementsPage() {
-  const supabase = await getServerSupabase();
-  const { data: announcements } = await supabase
+  const { data: announcements } = await supabaseAdmin
     .from('announcements')
     .select('*')
     .order('created_at', { ascending: false });

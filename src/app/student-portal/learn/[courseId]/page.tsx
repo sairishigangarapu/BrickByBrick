@@ -1,7 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import { getServerSupabase } from '@/lib/server-supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export default async function LearnCoursePage({ params }: { params: Promise<{ courseId: string }> }) {
   const { courseId } = await params;
@@ -11,9 +11,7 @@ export default async function LearnCoursePage({ params }: { params: Promise<{ co
     redirect('/sign-in');
   }
 
-  const supabase = await getServerSupabase();
-
-  const { data: dbUser } = await supabase
+  const { data: dbUser } = await supabaseAdmin
     .from('users')
     .select('id')
     .eq('clerk_id', userId)
@@ -23,7 +21,7 @@ export default async function LearnCoursePage({ params }: { params: Promise<{ co
     redirect('/sign-in');
   }
 
-  const { data: enrollment } = await supabase
+  const { data: enrollment } = await supabaseAdmin
     .from('enrollments')
     .select('id')
     .eq('user_id', dbUser.id)
@@ -34,7 +32,7 @@ export default async function LearnCoursePage({ params }: { params: Promise<{ co
     redirect(`/courses/${courseId}`);
   }
 
-  const { data: modules } = await supabase
+  const { data: modules } = await supabaseAdmin
     .from('modules')
     .select('id, lessons(id)')
     .eq('course_id', courseId)
