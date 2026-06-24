@@ -8,6 +8,7 @@ import TiptapEditor from '@/components/admin/TiptapEditor';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { createCourseAction } from '../actions';
+import { useToast } from '@/hooks/use-toast';
 
 function isValidHttpUrl(value: string) {
     try {
@@ -25,6 +26,7 @@ export default function AdminNewCoursePage() {
   const [pricingMode, setPricingMode] = useState<'free' | 'paid'>("free");
   const [priceValue, setPriceValue] = useState("49.00");
   const [formError, setFormError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,6 +51,19 @@ export default function AdminNewCoursePage() {
                 thumbnailUrl: thumbnailUrl ?? undefined,
             });
         } catch(error: any) {
+            const isRedirectError = error?.message === 'NEXT_REDIRECT' || error?.digest?.startsWith('NEXT_REDIRECT');
+            if (isRedirectError) {
+                toast({
+                    title: "Course Created",
+                    description: "The course was successfully created.",
+                });
+                throw error;
+            }
+            toast({
+                title: "Error",
+                description: error?.message || "Failed to create course.",
+                variant: "destructive",
+            });
             setFormError(error?.message || "Failed to create course. Ensure database constraints are met.");
         }
     });

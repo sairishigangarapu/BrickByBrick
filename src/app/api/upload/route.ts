@@ -19,41 +19,38 @@ export async function POST(request: Request) {
   }
 
   try {
-    const formData = await request.formData();
-    const file = formData.get('file') as File;
-    const type = formData.get('type') as string;
-    const folder = formData.get('folder') as string;
+    const body = await request.json();
+    const { type, folder, fileName } = body;
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+    if (!fileName) {
+      return NextResponse.json({ error: 'No file name provided' }, { status: 400 });
     }
 
     const bucketName = type === 'thumbnail' ? 'course-thumbnails' : 'lesson-content';
-    const fileName = `${folder}/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
+    const path = `${folder}/${Date.now()}-${fileName.replace(/\s+/g, '-')}`;
     
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
+    // Create signed upload URL
     const { data, error } = await supabaseAdmin.storage
       .from(bucketName)
-      .upload(fileName, buffer, {
-        contentType: file.type,
-        upsert: false,
-      });
+      .createSignedUploadUrl(path);
 
     if (error) {
+      console.error("Supabase Signed URL Error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    // Get the deterministic public URL
     const { data: urlData } = supabaseAdmin.storage
       .from(bucketName)
-      .getPublicUrl(fileName);
+      .getPublicUrl(path);
 
     return NextResponse.json({
-      url: urlData.publicUrl,
-      path: fileName,
+      signedUrl: data.signedUrl,
+      publicUrl: urlData.publicUrl,
+      path: path,
     });
   } catch (error) {
+    console.error("General Upload Error:", error);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
   }
 }

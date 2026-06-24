@@ -34,11 +34,21 @@ export function StorageUploader({
     setProgress(0);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', type);
-      formData.append('folder', folder);
+      // 1. Get Signed URL from our backend
+      const initRes = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, folder, fileName: file.name })
+      });
+      
+      if (!initRes.ok) {
+        const errData = await initRes.json();
+        throw new Error(errData.error || 'Failed to initialize upload');
+      }
+      
+      const { signedUrl, publicUrl } = await initRes.json();
 
+      // 2. Upload directly to Supabase Storage
       const xhr = new XMLHttpRequest();
       
       xhr.upload.onprogress = (event) => {
@@ -48,21 +58,23 @@ export function StorageUploader({
         }
       };
 
-      const response = await new Promise<{ url: string }>((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
         xhr.onload = () => {
-          if (xhr.status === 200) {
-            resolve(JSON.parse(xhr.responseText));
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve();
           } else {
-            const error = JSON.parse(xhr.responseText);
-            reject(new Error(error.error || 'Upload failed'));
+            reject(new Error('Direct upload failed with status ' + xhr.status));
           }
         };
-        xhr.onerror = () => reject(new Error('Network error'));
-        xhr.open('POST', '/api/upload');
-        xhr.send(formData);
+        xhr.onerror = () => reject(new Error('Network error during upload'));
+        
+        xhr.open('PUT', signedUrl);
+        // Supabase requires the Content-Type header to match the file
+        xhr.setRequestHeader('Content-Type', file.type);
+        xhr.send(file);
       });
 
-      onUploadComplete(response.url);
+      onUploadComplete(publicUrl);
     } catch (error) {
       onError?.(error instanceof Error ? error.message : 'Upload failed');
     } finally {

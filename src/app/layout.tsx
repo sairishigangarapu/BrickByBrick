@@ -11,6 +11,7 @@ import { Show, UserButton } from "@clerk/nextjs";
 import { ourFileRouter } from "./api/uploadthing/core";
 import "@uploadthing/react/styles.css";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const jost = Jost({ 
   subsets: ["latin"],
@@ -91,6 +92,7 @@ export default async function RootLayout({
           <main>
             {children}
           </main>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

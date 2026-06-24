@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { togglePublishCourseAction, deleteCourseAction } from '@/app/(admin)/admin/courses/actions';
 import { redirect } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 interface CourseActionsProps {
   course: {
@@ -20,16 +21,45 @@ interface CourseActionsProps {
 export function CourseActions({ course, moduleCount }: CourseActionsProps) {
   const [isPending, startTransition] = useTransition();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const { toast } = useToast();
 
   const handlePublish = () => {
     startTransition(async () => {
-      await togglePublishCourseAction(course.id);
+      try {
+        await togglePublishCourseAction(course.id);
+        toast({
+          title: course.is_published ? "Course Unpublished" : "Course Published",
+          description: course.is_published ? "The course is now hidden from the catalog." : "The course is now visible in the catalog.",
+        });
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: error?.message || "Failed to update course status.",
+          variant: "destructive",
+        });
+      }
     });
   };
 
   const handleDelete = () => {
     startTransition(async () => {
-      await deleteCourseAction(course.id);
+      try {
+        await deleteCourseAction(course.id);
+      } catch (error: any) {
+        const isRedirectError = error?.message === 'NEXT_REDIRECT' || error?.digest?.startsWith('NEXT_REDIRECT');
+        if (isRedirectError) {
+          toast({
+            title: "Course Deleted",
+            description: "The course was successfully deleted.",
+          });
+          throw error;
+        }
+        toast({
+          title: "Error",
+          description: error?.message || "Failed to delete course.",
+          variant: "destructive",
+        });
+      }
     });
   };
 

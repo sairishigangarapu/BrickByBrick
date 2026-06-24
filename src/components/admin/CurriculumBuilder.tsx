@@ -690,14 +690,13 @@ export default function CurriculumBuilder({
                       )}
 
                       <Button
-                        variant="ghost"
                         size="sm"
-                        className="text-xs w-full justify-start"
+                        className="w-full mt-2"
                         onClick={() => handleAddLesson(module.id)}
                         disabled={isPending}
                         type="button"
                       >
-                        <Plus className="w-4 h-4 mr-1" /> Add Lesson
+                        <Plus className="w-4 h-4 mr-2" /> Save Lesson
                       </Button>
                     </div>
                   </SortableModule>
