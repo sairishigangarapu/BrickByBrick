@@ -32,6 +32,23 @@ export default async function ContactPage() {
           <p className="text-gray-600 mb-8">
             Have a question or need help? Send us a message and we'll get back to you.
           </p>
+
+          <div className="mb-8 p-6 bg-white border border-gray-200 rounded-lg flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between shadow-sm">
+            <div>
+              <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-1">Direct Email</h3>
+              <a href="mailto:connect.brickbybrick@gmail.com" className="text-orange-600 hover:text-orange-700 font-medium transition-colors">
+                connect.brickbybrick@gmail.com
+              </a>
+            </div>
+            <div className="flex gap-4">
+              <a href="https://www.instagram.com/_brick_by.brick_/" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-gray-500 hover:text-orange-600 transition-colors uppercase tracking-wider">
+                Instagram
+              </a>
+              <a href="https://www.linkedin.com/company/brickbybrick-sip/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-gray-500 hover:text-orange-600 transition-colors uppercase tracking-wider">
+                LinkedIn
+              </a>
+            </div>
+          </div>
           <ContactForm 
             userId={userId} 
             userEmail={dbUser?.email || user?.primaryEmailAddress?.emailAddress || ''}

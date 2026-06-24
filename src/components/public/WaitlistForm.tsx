@@ -54,7 +54,11 @@ export function WaitlistForm() {
         error: null,
       })
     } catch (error) {
-      setState({ loading: false, success: null, error: 'Something went wrong. Please try again.' })
+      setState({ 
+        loading: false, 
+        success: null, 
+        error: error instanceof Error ? error.message : 'Something went wrong. Please try again.' 
+      })
     }
   }
 

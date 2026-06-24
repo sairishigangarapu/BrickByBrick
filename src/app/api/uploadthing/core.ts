@@ -15,7 +15,7 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       return {
         uploadedBy: metadata.userId,
-        url: file.ufsUrl,
+        url: file.url,
         name: file.name,
         size: file.size,
       };
@@ -33,7 +33,7 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       return {
         uploadedBy: metadata.userId,
-        url: file.ufsUrl,
+        url: file.url,
         name: file.name,
         size: file.size,
       };

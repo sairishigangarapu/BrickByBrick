@@ -230,10 +230,28 @@ export default function LandingPage() {
       </main>
 
       <footer className="bg-black px-4 py-10 text-white md:px-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 text-sm text-zinc-300 md:flex-row md:items-center md:justify-between">
-          <p>Early-stage project</p>
-          <p>Not an investment advisor</p>
-          <p>Built by a student team exploring real estate investing</p>
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+            <div>
+              <p className="text-xl font-black uppercase tracking-[0.3em] text-orange-500">BrickByBrick</p>
+              <a href="mailto:connect.brickbybrick@gmail.com" className="mt-2 block text-sm text-zinc-400 hover:text-white transition-colors">
+                connect.brickbybrick@gmail.com
+              </a>
+            </div>
+            <div className="flex gap-6 text-sm font-medium uppercase tracking-wider">
+              <a href="https://www.instagram.com/_brick_by.brick_/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors">
+                Instagram
+              </a>
+              <a href="https://www.linkedin.com/company/brickbybrick-sip/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors">
+                LinkedIn
+              </a>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3 text-xs text-zinc-500 border-t border-zinc-800 pt-8 md:flex-row md:items-center md:justify-between">
+            <p>Early-stage project</p>
+            <p>Not an investment advisor</p>
+            <p>Built by a student team exploring real estate investing</p>
+          </div>
         </div>
       </footer>
     </div>
