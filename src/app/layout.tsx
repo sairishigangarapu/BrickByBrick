@@ -61,6 +61,7 @@ export default async function RootLayout({
                 </Link>
                 <nav className="hidden md:flex items-center gap-4 text-sm font-medium">
                   <Link href="/courses" className="hover:text-orange-600">Catalog</Link>
+                  <Link href="/calculators" className="hover:text-orange-600">Calculators</Link>
                   <Link href="/contact" className="hover:text-orange-600">Contact</Link>
                   {userId && (
                     <>
