@@ -70,8 +70,11 @@ function RentVsInvestCalculator() {
           ₹ {monthlyRent.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="5000"
           max="100000"
           step="1000"
@@ -80,6 +83,19 @@ function RentVsInvestCalculator() {
             setMonthlyRent(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="5000"
+          max="100000"
+          step="1000"
+          value={monthlyRent}
+          onChange={(e) =>
+            setMonthlyRent(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -91,8 +107,11 @@ function RentVsInvestCalculator() {
           ₹ {monthlyInvestment.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="5000"
           max="100000"
           step="1000"
@@ -101,6 +120,19 @@ function RentVsInvestCalculator() {
             setMonthlyInvestment(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="5000"
+          max="100000"
+          step="1000"
+          value={monthlyInvestment}
+          onChange={(e) =>
+            setMonthlyInvestment(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -110,8 +142,11 @@ function RentVsInvestCalculator() {
 
         <p>{annualReturn}%</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="15"
           step="0.5"
@@ -120,6 +155,19 @@ function RentVsInvestCalculator() {
             setAnnualReturn(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="15"
+          step="0.5"
+          value={annualReturn}
+          onChange={(e) =>
+            setAnnualReturn(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -129,8 +177,11 @@ function RentVsInvestCalculator() {
 
         <p>{years} Years</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="30"
           step="1"
@@ -139,6 +190,19 @@ function RentVsInvestCalculator() {
             setYears(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="30"
+          step="1"
+          value={years}
+          onChange={(e) =>
+            setYears(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 

@@ -69,8 +69,11 @@ function AffordabilityCalculator() {
 
         <p>₹ {monthlyIncome.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="10000"
           max="500000"
           step="5000"
@@ -79,6 +82,19 @@ function AffordabilityCalculator() {
             setMonthlyIncome(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="10000"
+          max="500000"
+          step="5000"
+          value={monthlyIncome}
+          onChange={(e) =>
+            setMonthlyIncome(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -88,8 +104,11 @@ function AffordabilityCalculator() {
 
         <p>₹ {monthlyExpenses.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="5000"
           max="300000"
           step="5000"
@@ -98,6 +117,19 @@ function AffordabilityCalculator() {
             setMonthlyExpenses(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="5000"
+          max="300000"
+          step="5000"
+          value={monthlyExpenses}
+          onChange={(e) =>
+            setMonthlyExpenses(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -107,8 +139,11 @@ function AffordabilityCalculator() {
 
         <p>₹ {existingEMIs.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="100000"
           step="1000"
@@ -117,6 +152,19 @@ function AffordabilityCalculator() {
             setExistingEMIs(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="100000"
+          step="1000"
+          value={existingEMIs}
+          onChange={(e) =>
+            setExistingEMIs(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -126,8 +174,11 @@ function AffordabilityCalculator() {
 
         <p>₹ {currentSavings.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="5000000"
           step="50000"
@@ -136,6 +187,19 @@ function AffordabilityCalculator() {
             setCurrentSavings(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="5000000"
+          step="50000"
+          value={currentSavings}
+          onChange={(e) =>
+            setCurrentSavings(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 

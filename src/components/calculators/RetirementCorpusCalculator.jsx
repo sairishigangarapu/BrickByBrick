@@ -84,8 +84,11 @@ function RetirementCorpusCalculator() {
 
         <p>{currentAge} Years</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="18"
           max="60"
           step="1"
@@ -94,6 +97,19 @@ function RetirementCorpusCalculator() {
             setCurrentAge(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="18"
+          max="60"
+          step="1"
+          value={currentAge}
+          onChange={(e) =>
+            setCurrentAge(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -103,8 +119,11 @@ function RetirementCorpusCalculator() {
 
         <p>{retirementAge} Years</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="40"
           max="80"
           step="1"
@@ -113,6 +132,19 @@ function RetirementCorpusCalculator() {
             setRetirementAge(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="40"
+          max="80"
+          step="1"
+          value={retirementAge}
+          onChange={(e) =>
+            setRetirementAge(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -124,8 +156,11 @@ function RetirementCorpusCalculator() {
           ₹ {monthlyExpenses.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="10000"
           max="500000"
           step="5000"
@@ -134,6 +169,19 @@ function RetirementCorpusCalculator() {
             setMonthlyExpenses(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="10000"
+          max="500000"
+          step="5000"
+          value={monthlyExpenses}
+          onChange={(e) =>
+            setMonthlyExpenses(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -143,8 +191,11 @@ function RetirementCorpusCalculator() {
 
         <p>{inflationRate}%</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="10"
           step="0.5"
@@ -153,6 +204,19 @@ function RetirementCorpusCalculator() {
             setInflationRate(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="10"
+          step="0.5"
+          value={inflationRate}
+          onChange={(e) =>
+            setInflationRate(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 

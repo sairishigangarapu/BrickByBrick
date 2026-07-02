@@ -60,8 +60,11 @@ function InflationCalculator() {
           ₹ {currentAmount.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="100000"
           max="10000000"
           step="100000"
@@ -72,6 +75,21 @@ function InflationCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="100000"
+          max="10000000"
+          step="100000"
+          value={currentAmount}
+          onChange={(e) =>
+            setCurrentAmount(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 
@@ -81,8 +99,11 @@ function InflationCalculator() {
 
         <p>{inflationRate}%</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="12"
           step="0.5"
@@ -93,6 +114,21 @@ function InflationCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="12"
+          step="0.5"
+          value={inflationRate}
+          onChange={(e) =>
+            setInflationRate(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 
@@ -102,8 +138,11 @@ function InflationCalculator() {
 
         <p>{years} Years</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="40"
           step="1"
@@ -114,6 +153,21 @@ function InflationCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="40"
+          step="1"
+          value={years}
+          onChange={(e) =>
+            setYears(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 

@@ -47,8 +47,11 @@ function REITDividendCalculator() {
           ₹ {investmentAmount.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="100000"
           max="5000000"
           step="50000"
@@ -59,6 +62,21 @@ function REITDividendCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="100000"
+          max="5000000"
+          step="50000"
+          value={investmentAmount}
+          onChange={(e) =>
+            setInvestmentAmount(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -67,8 +85,11 @@ function REITDividendCalculator() {
 
         <p>{dividendYield}%</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="12"
           step="0.5"
@@ -79,6 +100,21 @@ function REITDividendCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="12"
+          step="0.5"
+          value={dividendYield}
+          onChange={(e) =>
+            setDividendYield(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 p-6 bg-orange-50 border border-orange-200 rounded-lg mt-6">

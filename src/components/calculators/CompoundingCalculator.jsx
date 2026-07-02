@@ -93,8 +93,11 @@ function CompoundingCalculator() {
           ₹ {initialInvestment.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="1000000"
           step="10000"
@@ -105,6 +108,21 @@ function CompoundingCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="1000000"
+          step="10000"
+          value={initialInvestment}
+          onChange={(e) =>
+            setInitialInvestment(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 
@@ -116,8 +134,11 @@ function CompoundingCalculator() {
           ₹ {monthlyContribution.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1000"
           max="100000"
           step="1000"
@@ -128,6 +149,21 @@ function CompoundingCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1000"
+          max="100000"
+          step="1000"
+          value={monthlyContribution}
+          onChange={(e) =>
+            setMonthlyContribution(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 
@@ -137,8 +173,11 @@ function CompoundingCalculator() {
 
         <p>{annualReturn}%</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="20"
           step="0.5"
@@ -149,6 +188,21 @@ function CompoundingCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="20"
+          step="0.5"
+          value={annualReturn}
+          onChange={(e) =>
+            setAnnualReturn(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 
@@ -158,8 +212,11 @@ function CompoundingCalculator() {
 
         <p>{years} Years</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="40"
           step="1"
@@ -170,6 +227,21 @@ function CompoundingCalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="40"
+          step="1"
+          value={years}
+          onChange={(e) =>
+            setYears(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 

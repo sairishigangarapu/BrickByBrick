@@ -48,8 +48,11 @@ function FIRECalculator() {
           ₹ {monthlyExpenses.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="10000"
           max="500000"
           step="5000"
@@ -60,6 +63,21 @@ function FIRECalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="10000"
+          max="500000"
+          step="5000"
+          value={monthlyExpenses}
+          onChange={(e) =>
+            setMonthlyExpenses(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 
@@ -69,8 +87,11 @@ function FIRECalculator() {
 
         <p>{withdrawalRate}%</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="2"
           max="6"
           step="0.5"
@@ -81,6 +102,21 @@ function FIRECalculator() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="2"
+          max="6"
+          step="0.5"
+          value={withdrawalRate}
+          onChange={(e) =>
+            setWithdrawalRate(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
 
       </div>
 

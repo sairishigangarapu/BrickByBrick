@@ -79,8 +79,11 @@ function REITReadinessCalculator() {
           ₹ {monthlyIncome.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="10000"
           max="500000"
           step="5000"
@@ -89,6 +92,19 @@ function REITReadinessCalculator() {
             setMonthlyIncome(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="10000"
+          max="500000"
+          step="5000"
+          value={monthlyIncome}
+          onChange={(e) =>
+            setMonthlyIncome(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -98,8 +114,11 @@ function REITReadinessCalculator() {
           ₹ {monthlySavings.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1000"
           max="100000"
           step="1000"
@@ -108,6 +127,19 @@ function REITReadinessCalculator() {
             setMonthlySavings(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1000"
+          max="100000"
+          step="1000"
+          value={monthlySavings}
+          onChange={(e) =>
+            setMonthlySavings(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -117,8 +149,11 @@ function REITReadinessCalculator() {
           ₹ {emergencyFund.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="2000000"
           step="50000"
@@ -127,6 +162,19 @@ function REITReadinessCalculator() {
             setEmergencyFund(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="2000000"
+          step="50000"
+          value={emergencyFund}
+          onChange={(e) =>
+            setEmergencyFund(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -134,8 +182,11 @@ function REITReadinessCalculator() {
 
         <p>{investmentExperience} Years</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="10"
           step="1"
@@ -144,6 +195,19 @@ function REITReadinessCalculator() {
             setInvestmentExperience(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="10"
+          step="1"
+          value={investmentExperience}
+          onChange={(e) =>
+            setInvestmentExperience(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 p-6 bg-orange-50 border border-orange-200 rounded-lg mt-6">

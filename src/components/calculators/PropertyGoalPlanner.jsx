@@ -94,8 +94,11 @@ function PropertyGoalPlanner() {
           ₹ {targetAmount.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="500000"
           max="5000000"
           step="50000"
@@ -106,6 +109,21 @@ function PropertyGoalPlanner() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="500000"
+          max="5000000"
+          step="50000"
+          value={targetAmount}
+          onChange={(e) =>
+            setTargetAmount(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -116,8 +134,11 @@ function PropertyGoalPlanner() {
           ₹ {currentSavings.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="1000000"
           step="10000"
@@ -128,6 +149,21 @@ function PropertyGoalPlanner() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="1000000"
+          step="10000"
+          value={currentSavings}
+          onChange={(e) =>
+            setCurrentSavings(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -138,8 +174,11 @@ function PropertyGoalPlanner() {
           ₹ {monthlyContribution.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1000"
           max="100000"
           step="1000"
@@ -150,6 +189,21 @@ function PropertyGoalPlanner() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1000"
+          max="100000"
+          step="1000"
+          value={monthlyContribution}
+          onChange={(e) =>
+            setMonthlyContribution(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -158,8 +212,11 @@ function PropertyGoalPlanner() {
 
         <p>{annualReturn}%</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="1"
           max="15"
           step="0.5"
@@ -170,6 +227,21 @@ function PropertyGoalPlanner() {
             )
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="1"
+          max="15"
+          step="0.5"
+          value={annualReturn}
+          onChange={(e) =>
+            setAnnualReturn(
+              Number(e.target.value)
+            )
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 p-6 bg-orange-50 border border-orange-200 rounded-lg mt-6">

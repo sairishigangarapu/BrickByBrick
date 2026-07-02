@@ -63,8 +63,11 @@ function NetWorthTracker() {
 
         <p>₹ {cash.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="5000000"
           step="50000"
@@ -73,6 +76,19 @@ function NetWorthTracker() {
             setCash(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="5000000"
+          step="50000"
+          value={cash}
+          onChange={(e) =>
+            setCash(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -80,8 +96,11 @@ function NetWorthTracker() {
 
         <p>₹ {stocks.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="10000000"
           step="50000"
@@ -90,6 +109,19 @@ function NetWorthTracker() {
             setStocks(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="10000000"
+          step="50000"
+          value={stocks}
+          onChange={(e) =>
+            setStocks(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -97,8 +129,11 @@ function NetWorthTracker() {
 
         <p>₹ {realEstate.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="50000000"
           step="100000"
@@ -107,6 +142,19 @@ function NetWorthTracker() {
             setRealEstate(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="50000000"
+          step="100000"
+          value={realEstate}
+          onChange={(e) =>
+            setRealEstate(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -114,8 +162,11 @@ function NetWorthTracker() {
 
         <p>₹ {liabilities.toLocaleString()}</p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="50000000"
           step="100000"
@@ -124,6 +175,19 @@ function NetWorthTracker() {
             setLiabilities(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="50000000"
+          step="100000"
+          value={liabilities}
+          onChange={(e) =>
+            setLiabilities(Number(e.target.value))
+          }
+        />
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 p-6 bg-orange-50 border border-orange-200 rounded-lg mt-6">

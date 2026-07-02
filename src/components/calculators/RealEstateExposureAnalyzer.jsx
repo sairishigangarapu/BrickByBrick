@@ -89,8 +89,11 @@ function RealEstateExposureAnalyzer() {
           ₹ {stocks.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="10000000"
           step="50000"
@@ -99,6 +102,19 @@ function RealEstateExposureAnalyzer() {
             setStocks(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="10000000"
+          step="50000"
+          value={stocks}
+          onChange={(e) =>
+            setStocks(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -110,8 +126,11 @@ function RealEstateExposureAnalyzer() {
           ₹ {mutualFunds.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="10000000"
           step="50000"
@@ -120,6 +139,19 @@ function RealEstateExposureAnalyzer() {
             setMutualFunds(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="10000000"
+          step="50000"
+          value={mutualFunds}
+          onChange={(e) =>
+            setMutualFunds(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -131,8 +163,11 @@ function RealEstateExposureAnalyzer() {
           ₹ {realEstate.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="50000000"
           step="100000"
@@ -141,6 +176,19 @@ function RealEstateExposureAnalyzer() {
             setRealEstate(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="50000000"
+          step="100000"
+          value={realEstate}
+          onChange={(e) =>
+            setRealEstate(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
@@ -152,8 +200,11 @@ function RealEstateExposureAnalyzer() {
           ₹ {cash.toLocaleString()}
         </p>
 
-        <input
-          type="range"
+        <div className="flex items-center gap-4 w-full">
+          <input
+            type="range"
+            className="flex-grow accent-orange-600"
+
           min="0"
           max="5000000"
           step="50000"
@@ -162,6 +213,19 @@ function RealEstateExposureAnalyzer() {
             setCash(Number(e.target.value))
           }
         />
+          <input
+            type="number"
+            className="w-24 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-black"
+
+          min="0"
+          max="5000000"
+          step="50000"
+          value={cash}
+          onChange={(e) =>
+            setCash(Number(e.target.value))
+          }
+        />
+        </div>
 
       </div>
 
