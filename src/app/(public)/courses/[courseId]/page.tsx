@@ -1,173 +1,205 @@
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
+import Image from 'next/image';
+import Link from 'next/link';
 import { supabaseAdmin } from '@/lib/supabase';
-import { Button } from '@/components/ui/Button';
-import { enrollInCourseAction, checkEnrollmentStatus } from '@/app/actions/enrollment';
-import { Badge } from '@/components/ui/Badge';
+import { SafeHtml } from '@/components/ui/SafeHtml';
+import { CourseEnrollControls } from './CourseEnrollControls';
+import { CourseLessonList } from './CourseLessonList';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 
-export default async function CourseDetailPage({ params }: { params: Promise<{ courseId: string }> }) {
-  const { courseId } = await params;
-  const { userId } = await auth();
+interface PageProps {
+  params: Promise<{ courseId: string }> | { courseId: string };
+}
 
-  const { data: course, error } = await supabaseAdmin
+interface ModuleRow {
+  id: string;
+  title: string;
+  order_index: number;
+}
+
+interface LessonRow {
+  id: string;
+  module_id: string;
+  course_id: string;
+  title: string;
+  content_type: 'video' | 'pdf' | 'text' | 'quiz';
+  content_url: string | null;
+  order_index: number;
+}
+
+interface EnrollmentRow {
+  id: string;
+  progress_percent: number;
+  is_completed: boolean;
+}
+
+export default async function CourseDetailPage({ params }: PageProps) {
+  const resolvedParams = await Promise.resolve(params);
+  const courseId = resolvedParams.courseId;
+
+  const { data: course, error: courseError } = await supabaseAdmin
     .from('courses')
-    .select('*')
+    .select('id, title, description, thumbnail_url, is_published, created_at')
     .eq('id', courseId)
-    .single();
+    .maybeSingle();
 
-  if (error || !course) {
+  if (courseError || !course) {
     notFound();
   }
 
-  if (!course.is_published) {
-    notFound();
+  const { userId } = await auth();
+  let dbUserId: string | null = null;
+  if (userId) {
+    const { data: dbUser } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('clerk_id', userId)
+      .maybeSingle();
+    dbUserId = dbUser?.id ?? null;
   }
 
-  const { data: modules } = await supabaseAdmin
+  const { data: modulesData } = await supabaseAdmin
     .from('modules')
-    .select(`
-      id,
-      title,
-      order_index,
-      lessons (
-        id,
-        title,
-        content_type,
-        is_preview,
-        order_index
-      )
-    `)
+    .select('id, title, order_index')
     .eq('course_id', courseId)
     .order('order_index', { ascending: true });
 
-  const sortedModules = (modules || []).map(m => ({
-    ...m,
-    lessons: (m.lessons || []).sort((a: any, b: any) => a.order_index - b.order_index)
-  }));
+  const { data: lessonsData } = await supabaseAdmin
+    .from('lessons')
+    .select('id, module_id, course_id, title, content_type, content_url, order_index')
+    .eq('course_id', courseId)
+    .order('order_index', { ascending: true });
 
-  let isEnrolled = false;
-  if (userId) {
-    isEnrolled = await checkEnrollmentStatus(courseId);
+  const modules: ModuleRow[] = (modulesData ?? []) as ModuleRow[];
+  const lessons: LessonRow[] = (lessonsData ?? []) as LessonRow[];
+
+  let enrollment: EnrollmentRow | null = null;
+  let completedLessonIds: Set<string> = new Set();
+
+  if (dbUserId) {
+    const { data: enrollmentData } = await supabaseAdmin
+      .from('enrollments')
+      .select('id, progress_percent, is_completed')
+      .eq('user_id', dbUserId)
+      .eq('course_id', courseId)
+      .maybeSingle();
+    enrollment = (enrollmentData ?? null) as EnrollmentRow | null;
+
+    if (enrollment) {
+      const { data: progressData } = await supabaseAdmin
+        .from('lesson_progress')
+        .select('lesson_id')
+        .eq('enrollment_id', enrollment.id)
+        .eq('is_completed', true);
+      completedLessonIds = new Set(
+        ((progressData ?? []) as Array<{ lesson_id: string }>).map((r) => r.lesson_id)
+      );
+    }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                {course.is_paid && (
-                  <Badge variant="default">Paid Course</Badge>
-                )}
-                {course.difficulty && (
-                  <Badge variant="secondary">{course.difficulty}</Badge>
-                )}
-              </div>
-              <h1 className="text-4xl font-black mb-4">{course.title}</h1>
-              {course.description && (
-                <div 
-                  className="prose prose-lg max-w-none text-gray-600"
-                  dangerouslySetInnerHTML={{ __html: course.description }}
-                />
+    <div className="min-h-screen bg-white">
+      <div className="bg-zinc-950 text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16 grid md:grid-cols-3 gap-8 items-center">
+          <div className="md:col-span-2">
+            <Link
+              href="/courses"
+              className="text-xs text-zinc-400 hover:text-white uppercase tracking-widest font-bold"
+            >
+              ← All Courses
+            </Link>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight mt-3 mb-3">
+              {course.title}
+            </h1>
+            <div className="flex items-center gap-2 text-xs text-zinc-400 uppercase tracking-wider font-bold">
+              <span>{lessons.length} lessons</span>
+              <span aria-hidden="true">·</span>
+              <span>{modules.length} modules</span>
+              {enrollment && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span className="text-orange-400">
+                    {enrollment.progress_percent}% complete
+                  </span>
+                </>
               )}
             </div>
-            <div className="lg:col-span-1">
-              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm sticky top-8">
-                {course.thumbnail_url && (
-                  <div className="relative h-48 w-full">
-                    <Image
-                      src={course.thumbnail_url}
-                      alt={course.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-                <div className="p-6">
-                  <div className="mb-6">
-                    {course.is_paid ? (
-                      <p className="text-3xl font-bold text-gray-900">${course.price}</p>
-                    ) : (
-                      <p className="text-3xl font-bold text-green-600">Free</p>
-                    )}
-                  </div>
-                  
-                  {isEnrolled ? (
-                    <Link href={`/student-portal/learn/${courseId}`} className="block">
-                      <Button size="lg" className="w-full">Continue Learning</Button>
-                    </Link>
-                  ) : userId ? (
-                    <form action={enrollInCourseAction.bind(null, courseId)}>
-                      <Button size="lg" className="w-full" type="submit">
-                        Enroll Now
-                      </Button>
-                    </form>
-                  ) : (
-                    <Link href="/sign-in">
-                      <Button size="lg" className="w-full">Sign In to Enroll</Button>
-                    </Link>
-                  )}
-
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <h3 className="font-semibold mb-3">This course includes:</h3>
-                    <ul className="space-y-2 text-sm text-gray-600">
-                      <li>✓ {sortedModules.reduce((acc, m) => acc + (m.lessons?.length || 0), 0)} lessons</li>
-                      <li>✓ {sortedModules.length} modules</li>
-                      {course.is_paid ? '✓ Full lifetime access' : '✓ Free access'}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl font-bold mb-6">Course Curriculum</h2>
-          
-          {sortedModules.length === 0 ? (
-            <p className="text-gray-500">No curriculum available yet.</p>
-          ) : (
-            <div className="space-y-4">
-              {sortedModules.map((module, moduleIndex) => (
-                <div key={module.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                  <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                    <h3 className="font-semibold text-lg">
-                      Module {moduleIndex + 1}: {module.title}
-                    </h3>
-                    <p className="text-sm text-gray-500">{module.lessons?.length || 0} lessons</p>
-                  </div>
-                  <div className="divide-y divide-gray-100">
-                    {module.lessons?.map((lesson: any, lessonIndex: number) => (
-                      <div key={lesson.id} className="px-6 py-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <span className="text-gray-400 text-sm">{lessonIndex + 1}.</span>
-                          <span className="text-gray-700">{lesson.title}</span>
-                          {lesson.is_preview && (
-                            <Badge variant="outline" className="text-xs">Preview</Badge>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs uppercase tracking-wider text-gray-500">
-                            {lesson.content_type}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+          {course.thumbnail_url && (
+            <div className="relative w-full aspect-video md:aspect-square rounded-2xl overflow-hidden border border-zinc-800">
+              <Image
+                src={course.thumbnail_url}
+                alt={course.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover"
+              />
             </div>
           )}
         </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+          {course.description ? (
+            <section>
+              <h2 className="text-lg font-black uppercase mb-3">About this course</h2>
+              <SafeHtml html={course.description} className="prose prose-sm max-w-none text-zinc-700 leading-relaxed" />
+            </section>
+          ) : null}
+
+          <section>
+            <h2 className="text-lg font-black uppercase mb-4">Curriculum</h2>
+            {lessons.length === 0 ? (
+              <div className="p-8 border border-dashed border-zinc-300 text-center text-zinc-500 text-sm">
+                Curriculum is being built. Check back soon.
+              </div>
+            ) : (
+              <CourseLessonList
+                modules={modules}
+                lessons={lessons}
+                completedLessonIds={Array.from(completedLessonIds)}
+                isEnrolled={!!enrollment}
+              />
+            )}
+          </section>
+        </div>
+
+        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          <CourseEnrollControls
+            courseId={course.id}
+            isSignedIn={!!userId}
+            isEnrolled={!!enrollment}
+            progressPercent={enrollment?.progress_percent ?? 0}
+            isCompleted={enrollment?.is_completed ?? false}
+          />
+
+          <div className="bg-zinc-50 border border-zinc-200 rounded-2xl p-5">
+            <h3 className="text-sm font-black uppercase tracking-wider mb-2">Course Details</h3>
+            <dl className="text-sm space-y-1.5">
+              <div className="flex justify-between">
+                <dt className="text-zinc-500">Lessons</dt>
+                <dd className="font-bold">{lessons.length}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-zinc-500">Modules</dt>
+                <dd className="font-bold">{modules.length}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-zinc-500">Status</dt>
+                <dd className="font-bold">{course.is_published ? 'Published' : 'Draft'}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-zinc-500">Created</dt>
+                <dd className="font-bold">
+                  {new Date(course.created_at).toLocaleDateString()}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
       </div>
     </div>
   );

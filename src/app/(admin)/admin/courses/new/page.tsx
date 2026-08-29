@@ -23,8 +23,6 @@ export default function AdminNewCoursePage() {
   const [isPending, startTransition] = useTransition();
   const [description, setDescription] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
-  const [pricingMode, setPricingMode] = useState<'free' | 'paid'>("free");
-  const [priceValue, setPriceValue] = useState("49.00");
   const [formError, setFormError] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -32,22 +30,12 @@ export default function AdminNewCoursePage() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const title = formData.get('title') as string;
-    const isPaid = pricingMode === 'paid';
-    const price = isPaid ? parseFloat(priceValue || "0") : 0;
-
-    if (isPaid && (!Number.isFinite(price) || price <= 0)) {
-        setFormError("Paid courses need a price above $0.");
-        return;
-    }
-
     setFormError(null);
     startTransition(async () => {
         try {
             await createCourseAction({
                 title,
                 description,
-                price,
-                isPaid,
                 thumbnailUrl: thumbnailUrl ?? undefined,
             });
         } catch(error: any) {
@@ -113,44 +101,6 @@ export default function AdminNewCoursePage() {
                         />
                     )}
                     <p className="text-xs text-gray-400 mt-2">PNG or JPG up to 4MB.</p>
-                </div>
-                <div>
-                    <label className="block text-sm font-bold tracking-widest uppercase mb-2">Pricing Mode</label>
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                        <Button
-                            type="button"
-                            variant={pricingMode === 'free' ? 'default' : 'outline'}
-                            className="w-full"
-                            onClick={() => setPricingMode('free')}
-                        >
-                            Free Course
-                        </Button>
-                        <Button
-                            type="button"
-                            variant={pricingMode === 'paid' ? 'default' : 'outline'}
-                            className="w-full"
-                            onClick={() => setPricingMode('paid')}
-                        >
-                            Paid Course
-                        </Button>
-                    </div>
-                    <label className="block text-sm font-bold tracking-widest uppercase mb-2">Price ($)</label>
-                    <Input
-                        name="price"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={priceValue}
-                        onChange={(event) => setPriceValue(event.target.value)}
-                        disabled={pricingMode === 'free'}
-                        required={pricingMode === 'paid'}
-                        placeholder="99.00"
-                    />
-                    <p className="text-xs text-gray-400 mt-1">
-                        {pricingMode === 'free'
-                            ? 'Learners can enroll without payment.'
-                            : 'Set the one-time purchase price.'}
-                    </p>
                 </div>
             </div>
 

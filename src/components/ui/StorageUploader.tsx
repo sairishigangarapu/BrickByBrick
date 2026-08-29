@@ -2,8 +2,48 @@
 
 import { useState, useRef } from 'react';
 
+// MIME type whitelist per security guide requirements
+const IMAGE_WHITELIST = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
+const PDF_WHITELIST = ['application/pdf'];
+const VIDEO_WHITELIST = ['video/mp4', 'video/webm', 'video/quicktime'];
+
+function getMaxSizeForType(type: string): number {
+  switch (type) {
+    case 'logo':
+    case 'thumbnail':
+      return 4 * 1024 * 1024; // 4MB
+    case 'banner':
+      return 5 * 1024 * 1024; // 5MB
+    case 'pdf':
+    case 'brochure':
+    case 'lesson-pdf':
+      return 10 * 1024 * 1024; // 10MB
+    case 'lesson-video':
+      return 500 * 1024 * 1024; // 500MB
+    default:
+      return 50 * 1024 * 1024; // 50MB
+  }
+}
+
+function getAcceptedTypesForType(type: string): string[] {
+  switch (type) {
+    case 'logo':
+    case 'thumbnail':
+    case 'banner':
+      return IMAGE_WHITELIST;
+    case 'pdf':
+    case 'brochure':
+    case 'lesson-pdf':
+      return PDF_WHITELIST;
+    case 'lesson-video':
+      return VIDEO_WHITELIST;
+    default:
+      return [...IMAGE_WHITELIST, ...PDF_WHITELIST, ...VIDEO_WHITELIST];
+  }
+}
+
 interface StorageUploaderProps {
-  type: 'thumbnail' | 'lesson';
+  type: 'logo' | 'banner' | 'thumbnail' | 'lesson-pdf' | 'lesson-video' | 'brochure';
   folder: string;
   accept?: string;
   maxSize?: number;
@@ -15,7 +55,7 @@ export function StorageUploader({
   type,
   folder,
   accept = '*',
-  maxSize = 50 * 1024 * 1024, // 50MB default
+  maxSize,
   onUploadComplete,
   onError,
 }: StorageUploaderProps) {
@@ -23,10 +63,22 @@ export function StorageUploader({
   const [progress, setProgress] = useState(0);
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedMimeType, setSelectedMimeType] = useState<string | null>(null);
+
+  // Determine max size and validate mime type based on type
+  const typeSpecificMaxSize = maxSize ?? getMaxSizeForType(type);
+  const acceptedTypes = getAcceptedTypesForType(type);
 
   const handleUpload = async (file: File) => {
-    if (file.size > maxSize) {
-      onError?.(`File too large. Max size: ${Math.round(maxSize / 1024 / 1024)}MB`);
+    // Client-side MIME type check
+    if (file.type && !acceptedTypes.includes(file.type)) {
+      onError?.(`Invalid file type. Allowed types: ${acceptedTypes.join(', ')}`);
+      return;
+    }
+
+    // Client-side size check
+    if (file.size > typeSpecificMaxSize) {
+      onError?.(`File too large. Max size: ${Math.round(typeSpecificMaxSize / 1024 / 1024)}MB`);
       return;
     }
 
@@ -38,7 +90,7 @@ export function StorageUploader({
       const initRes = await fetch('/api/upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, folder, fileName: file.name })
+        body: JSON.stringify({ type, folder, fileName: file.name, fileType: file.type, fileSize: file.size })
       });
       
       if (!initRes.ok) {
@@ -132,7 +184,7 @@ export function StorageUploader({
             Drag and drop a file here, or click to browse
           </p>
           <p className="text-xs text-gray-400 mt-1">
-            Max size: {Math.round(maxSize / 1024 / 1024)}MB
+            Max size: {Math.round((maxSize ?? 50 * 1024 * 1024) / 1024 / 1024)}MB
           </p>
         </>
       )}

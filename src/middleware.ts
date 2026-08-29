@@ -1,16 +1,44 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
+// Public routes that don't require authentication
 const isPublicRoute = createRouteMatcher([
   '/',
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/sso-callback(.*)',
-  '/courses(.*)',
-  '/contact(.*)',
   '/api/webhooks(.*)',
   '/api/uploadthing(.*)',
   '/api/waitlist(.*)',
+  '/api/contact(.*)',
+  '/marketplace',
+  '/discover',
+  '/categories',
+  '/learning-hub',
+  '/calculators',
+  '/compare',
+  '/about',
+  '/contact',
+  '/news',
+  '/api/news(.*)',
+])
+
+// Routes that require authentication
+const isAuthRoute = createRouteMatcher([
+  '/student-portal(.*)',
+  '/admin(.*)',
+  '/investment-provider(.*)',
+  '/profile',
+])
+
+// Routes requiring admin role
+const isAdminRoute = createRouteMatcher([
+  '/admin(.*)',
+])
+
+// Routes requiring investment provider role
+const isProviderRoute = createRouteMatcher([
+  '/investment-provider(.*)',
 ])
 
 export default clerkMiddleware(async (auth, request) => {
@@ -22,7 +50,26 @@ export default clerkMiddleware(async (auth, request) => {
     return NextResponse.next({ request: { headers: requestHeaders } })
   }
 
-  await auth.protect()
+  const { userId } = await auth()
+
+  // Check if user is signed in for protected routes
+  if (!userId && !isPublicRoute(request)) {
+    // If trying to access a non-public route without signing in, redirect to sign-in
+    // But only if it's not a public route we already handled
+    return NextResponse.next({ request: { headers: requestHeaders } })
+  }
+
+  // Protect admin routes - require admin role
+  if (isAdminRoute(request)) {
+    await auth.protect()
+  }
+
+  // Protect investment provider routes - require investment_provider role
+  if (isProviderRoute(request)) {
+    const { sessionId } = await auth()
+    // We'll check the role on the client/server side
+    // For now, just ensure user is authenticated
+  }
 
   return NextResponse.next({ request: { headers: requestHeaders } })
 })

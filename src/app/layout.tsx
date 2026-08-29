@@ -12,6 +12,8 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import "@uploadthing/react/styles.css";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { DisclaimerPopup } from "@/components/ui/DisclaimerPopup";
+import { CookieConsent } from "@/components/ui/CookieConsent";
 
 const jost = Jost({ 
   subsets: ["latin"],
@@ -19,8 +21,8 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "BrickByBrick - LMS",
-  description: "A functional, minimalist educational platform",
+  title: "BrickByBrick - Alternative Investment Marketplace",
+  description: "India's Marketplace for Alternative Investments",
   icons: {
     icon: "/favicon.ico",
   },
@@ -33,11 +35,19 @@ export default async function RootLayout({
 }) {
   let userId: string | null = null;
   let isAdmin = false;
+  let isProvider = false;
+  let userRole: string = 'user';
+  let userMetadata: any = null;
+  let user: any = null;
   try {
     const authResult = await auth();
     userId = authResult.userId;
-    const user = await currentUser();
-    isAdmin = user?.publicMetadata?.role === 'admin';
+    user = await currentUser();
+    if (user?.publicMetadata?.role) {
+      userRole = user.publicMetadata.role;
+      isAdmin = userRole === 'admin';
+      isProvider = userRole === 'investment_provider';
+    }
   } catch {
     // Not signed in - safe defaults
   }
@@ -47,11 +57,26 @@ export default async function RootLayout({
   const pathname = headersList.get('x-pathname') || headersList.get('x-invoke-path') || '';
   const isLessonPage = /\/student-portal\/learn\/[^/]+\/[^/]+/.test(pathname);
 
+  // Determine navigation items based on user role
+  const navItems = isAdmin ? [
+    { href: '/admin', label: 'Admin', showWhenSignedIn: true },
+  ] : isProvider ? [
+    { href: '/investment-provider', label: 'My Listings', showWhenSignedIn: true },
+    { href: '/marketplace', label: 'Marketplace', showWhenSignedIn: true },
+  ] : [
+    { href: '/marketplace', label: 'Marketplace', showWhenSignedIn: true },
+    { href: '/discover', label: 'Discover', showWhenSignedIn: true },
+    { href: '/learning-hub', label: 'Learning Hub', showWhenSignedIn: true },
+    { href: '/calculators', label: 'Calculators', showWhenSignedIn: true },
+  ];
+
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${jost.variable} antialiased text-black bg-white font-sans`} suppressHydrationWarning>
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+          <DisclaimerPopup />
+          <CookieConsent />
           {!isLessonPage && (
             <header className="flex items-center justify-between px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-50">
               <div className="flex items-center gap-6">
@@ -60,9 +85,11 @@ export default async function RootLayout({
                   <span className="font-bold text-lg">BrickByBrick</span>
                 </Link>
                 <nav className="hidden md:flex items-center gap-4 text-sm font-medium">
-                  <Link href="/courses" className="hover:text-orange-600">Catalog</Link>
-                  <Link href="/calculators" className="hover:text-orange-600">Calculators</Link>
-                  <Link href="/contact" className="hover:text-orange-600">Contact</Link>
+                  {navItems.map((item, index) => (
+                    <Link key={index} href={item.href} className={item.showWhenSignedIn ? 'hover:text-orange-600' : ''}>
+                      {item.label}
+                    </Link>
+                  ))}
                   {userId && (
                     <>
                       <Link href="/student-portal/dashboard" className="hover:text-orange-600">Dashboard</Link>
@@ -72,6 +99,9 @@ export default async function RootLayout({
                   )}
                   {isAdmin && (
                     <Link href="/admin" className="font-bold hover:text-orange-600">Admin</Link>
+                  )}
+                  {isProvider && (
+                    <Link href="/investment-provider" className="font-bold hover:text-orange-600">Provider</Link>
                   )}
                 </nav>
               </div>

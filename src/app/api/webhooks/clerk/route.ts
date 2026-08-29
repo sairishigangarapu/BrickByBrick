@@ -25,10 +25,10 @@ export async function POST(req: NextRequest) {
 
     const email = email_addresses[0]?.email_address
     const fullName = [first_name, last_name].filter(Boolean).join(' ') || null
-    
+
     // Check if this email is the admin email
     const isAdmin = email === ADMIN_EMAIL
-    const userRole = isAdmin ? 'admin' : 'student'
+    const userRole: 'user' | 'admin' = isAdmin ? 'admin' : 'user'
 
     try {
       // Insert user into database with appropriate role
@@ -41,8 +41,24 @@ export async function POST(req: NextRequest) {
           avatar_url: image_url,
           role: userRole,
         })
-      if (error) throw error
-      
+      if (error) {
+        // If the user already exists (e.g. ensureSupabaseUser ran first), do an upsert
+        if (error.code === '23505') {
+          const { error: updateErr } = await supabaseAdmin
+            .from('users')
+            .update({
+              email: email,
+              full_name: fullName,
+              avatar_url: image_url,
+              role: userRole,
+            })
+            .eq('clerk_id', id);
+          if (updateErr) throw updateErr;
+        } else {
+          throw error;
+        }
+      }
+
       // If admin, set public metadata in Clerk
       if (isAdmin) {
         await setClerkMetadata(id, { role: 'admin' })
@@ -56,7 +72,7 @@ export async function POST(req: NextRequest) {
     const { id, email_addresses, first_name, last_name, image_url } = evt.data
     const email = email_addresses[0]?.email_address
     const fullName = [first_name, last_name].filter(Boolean).join(' ') || null
-    
+
     // Check if this email is now the admin email
     const isAdmin = email === ADMIN_EMAIL
 
@@ -67,10 +83,10 @@ export async function POST(req: NextRequest) {
              email: email,
              full_name: fullName,
              avatar_url: image_url,
-             role: isAdmin ? 'admin' : 'student'
+             role: isAdmin ? 'admin' : 'user'
           })
           .eq('clerk_id', id)
-          
+
         // Update Clerk metadata if admin status changed
         if (isAdmin) {
           await setClerkMetadata(id, { role: 'admin' })

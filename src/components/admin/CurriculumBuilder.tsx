@@ -656,7 +656,7 @@ export default function CurriculumBuilder({
                       {(draft.contentType === 'video' || draft.contentType === 'pdf') && (
                         <div>
                           <StorageUploader
-                            type="lesson"
+                            type={draft.contentType === 'video' ? 'lesson-video' : 'lesson-pdf'}
                             folder={`courses/${courseId}/${module.id}`}
                             accept={draft.contentType === 'video' ? 'video/*' : 'application/pdf'}
                             onUploadComplete={(url) => {

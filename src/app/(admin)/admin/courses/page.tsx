@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { supabaseAdmin } from '@/lib/supabase';
 import { Badge } from '@/components/ui/Badge';
+import { Card, CardContent } from '@/components/ui/Card';
 
 async function getCourses() {
   const { data } = await supabaseAdmin
@@ -23,44 +24,48 @@ export default async function AdminCoursesPage() {
           <Button>Create New Course</Button>
         </Link>
       </div>
-      <div className="bg-white border border-gray-200">
-        <table className="w-full text-left">
-          <thead className="bg-brand-surface border-b border-gray-200 uppercase text-xs tracking-wider text-gray-500">
-            <tr>
-              <th className="p-4">Title</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Created</th>
-              <th className="p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.length === 0 ? (
+      <Card>
+        <CardContent className="p-0 overflow-hidden">
+          <table className="w-full text-left text-sm text-gray-600">
+            <thead className="bg-gray-50 text-gray-700 text-xs uppercase font-semibold">
               <tr>
-                <td className="p-4" colSpan={4}>No courses created.</td>
+                <th className="px-6 py-4">Title</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Created</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
-            ) : (
-              courses.map((course) => (
-                <tr key={course.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="p-4 font-medium">{course.title}</td>
-                  <td className="p-4">
-                    <Badge variant={course.is_published ? "default" : "secondary"}>
-                      {course.is_published ? "Published" : "Draft"}
-                    </Badge>
-                  </td>
-                  <td className="p-4 text-sm text-gray-500">
-                    {new Date(course.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="p-4">
-                    <Link href={`/admin/courses/${course.id}`}>
-                      <Button variant="outline" size="sm">Edit</Button>
-                    </Link>
-                  </td>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {courses.length === 0 ? (
+                <tr>
+                  <td className="px-6 py-4 text-center text-gray-500" colSpan={4}>No courses created.</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ) : (
+                courses.map((course) => (
+                  <tr key={course.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 font-bold text-gray-900">{course.title}</td>
+                    <td className="px-6 py-4">
+                      <span className={`text-xs px-2 py-1 rounded font-medium ${
+                        course.is_published ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-800'
+                      }`}>
+                        {course.is_published ? "Published" : "Draft"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {new Date(course.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <Link href={`/admin/courses/${course.id}`}>
+                        <Button variant="outline" size="sm" className="text-xs">Edit</Button>
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -11,8 +11,6 @@ interface CourseActionsProps {
   course: {
     id: string;
     is_published: boolean;
-    is_paid: boolean;
-    price: number | null;
     title: string;
   };
   moduleCount: number;
@@ -88,14 +86,16 @@ export function CourseActions({ course, moduleCount }: CourseActionsProps) {
       
       <div className="bg-white p-6 border border-gray-200">
         <h3 className="font-bold uppercase tracking-widest text-xs mb-4">Quick Stats</h3>
-        <div className="text-sm space-y-2">
-          <div className="flex justify-between">
-            <span className="text-gray-500">Pricing</span> 
-            <span className="font-bold">{course.is_paid ? `$${Number(course.price ?? 0).toFixed(2)}` : 'Free'}</span>
-          </div>
+        <div className="text-sm space-y-4">
           <div className="flex justify-between">
             <span className="text-gray-500">Total Modules</span> 
             <span className="font-bold">{moduleCount}</span>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 mb-1">Status</p>
+            <span className={`px-2 py-1 text-xs font-bold rounded ${course.is_published ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+              {course.is_published ? 'Published' : 'Draft'}
+            </span>
           </div>
         </div>
       </div>

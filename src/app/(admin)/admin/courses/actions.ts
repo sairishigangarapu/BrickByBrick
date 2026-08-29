@@ -8,8 +8,6 @@ import { redirect } from 'next/navigation';
 type CreateCoursePayload = {
     title: string;
     description: string;
-    price: number;
-    isPaid: boolean;
     thumbnailUrl?: string | null;
 };
 
@@ -43,17 +41,9 @@ async function ensureAdminAccess() {
 export async function createCourseAction(payload: CreateCoursePayload) {
     await ensureAdminAccess();
 
-    const normalizedPrice = payload.isPaid ? Math.max(payload.price, 0) : 0;
-
-    if (payload.isPaid && normalizedPrice === 0) {
-        throw new Error('Paid courses require a valid price.');
-    }
-
     const { data: course, error } = await supabaseAdmin.from('courses').insert({
         title: payload.title,
         description: payload.description,
-        price: normalizedPrice,
-        is_paid: payload.isPaid,
         thumbnail_url: payload.thumbnailUrl || null,
         is_published: false
     }).select('id').single();
@@ -140,6 +130,7 @@ export async function createLessonAction(input: {
         .from('lessons')
         .insert({
             module_id: input.moduleId,
+            course_id: input.courseId,
             title: normalizedTitle,
             content_type: input.contentType,
             content_url: input.contentUrl ?? null,

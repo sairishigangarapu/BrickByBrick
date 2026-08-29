@@ -7,8 +7,11 @@ import Image from 'next/image';
 
 const navLinks = [
   { href: '/admin', label: 'Dashboard', icon: '📊' },
-  { href: '/admin/courses', label: 'Courses', icon: '📚' },
+  { href: '/admin/listings', label: 'Listings', icon: '🏢' },
   { href: '/admin/users', label: 'Users', icon: '👥' },
+  { href: '/admin/categories', label: 'Categories', icon: '🏷️' },
+  { href: '/admin/waitlist', label: 'Waitlist', icon: '⏳' },
+  { href: '/admin/courses', label: 'Courses', icon: '📚' },
   { href: '/admin/announcements', label: 'Announcements', icon: '📢' },
   { href: '/admin/contact', label: 'Contact', icon: '✉️' },
   { href: '/admin/certificates', label: 'Certificates', icon: '📜' },
@@ -76,7 +79,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
       </main>
 
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 px-2 z-30">
-        {navLinks.slice(0, 4).map(link => (
+        {navLinks.slice(0, 5).map(link => (
           <Link 
             key={link.href} 
             href={link.href}

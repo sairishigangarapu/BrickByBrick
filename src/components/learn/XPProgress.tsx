@@ -3,73 +3,50 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
+import { LEVELS, getCurrentLevel, getNextLevel } from '@/lib/levels';
+
 interface UserProgress {
   xp: number;
   level: number;
   completedLessons: string[];
 }
 
-const LEVELS = [
-  { level: 1, name: 'Inflation Buster', xpRequired: 0, description: 'Beat inflation with your investments' },
-  { level: 2, name: 'Compound Master', xpRequired: 50, description: 'Understand the power of compounding' },
-  { level: 3, name: 'Asset Expert', xpRequired: 120, description: 'Know your asset classes' },
-  { level: 4, name: 'Wealth Builder', xpRequired: 200, description: 'Start building real wealth' },
-  { level: 5, name: 'Financial Ninja', xpRequired: 300, description: 'Master your financial future' },
-];
-
-function getCurrentLevel(xp: number) {
-  let currentLevel = LEVELS[0];
-  for (const level of LEVELS) {
-    if (xp >= level.xpRequired) {
-      currentLevel = level;
-    }
-  }
-  return currentLevel;
-}
-
-function getNextLevel(currentLevelIndex: number) {
-  return LEVELS[currentLevelIndex + 1] || null;
-}
-
-export function XPProgress() {
+export function XPProgress({ initialXP = 0, initialLevel = 1 }: { initialXP?: number; initialLevel?: number }) {
   const [progress, setProgress] = useState<UserProgress>({
-    xp: 0,
-    level: 1,
+    xp: initialXP,
+    level: initialLevel,
     completedLessons: [],
   });
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const loadProgress = () => {
-      const stored = localStorage.getItem('brickbybrick-progress');
-      if (stored) {
-        setProgress(JSON.parse(stored));
+    setProgress((prev) => ({
+      ...prev,
+      xp: initialXP,
+      level: initialLevel,
+    }));
+    setIsLoaded(true);
+
+    const handleXPUpdate = (e: any) => {
+      if (e?.detail) {
+        setProgress((prev) => ({
+          ...prev,
+          xp: e.detail.xp,
+          level: e.detail.level,
+        }));
       }
-      setIsLoaded(true);
     };
 
-    loadProgress();
-
-    const handleStorage = () => loadProgress();
-    const handleXPUpdate = () => loadProgress();
-    window.addEventListener('storage', handleStorage);
     window.addEventListener('xp-updated', handleXPUpdate);
-    
-    const interval = setInterval(loadProgress, 1000);
-
-    return () => {
-      window.removeEventListener('storage', handleStorage);
-      window.removeEventListener('xp-updated', handleXPUpdate);
-      clearInterval(interval);
-    };
-  }, []);
+    return () => window.removeEventListener('xp-updated', handleXPUpdate);
+  }, [initialXP, initialLevel]);
 
   if (!isLoaded) return null;
 
-  const currentLevelIndex = LEVELS.findIndex(l => l.level === progress.level);
-  const currentLevel = LEVELS[currentLevelIndex];
+  const currentLevelIndex = LEVELS.findIndex((l) => l.level === progress.level);
+  const currentLevel = LEVELS[currentLevelIndex] ?? LEVELS[0];
   const nextLevel = getNextLevel(currentLevelIndex);
-  const progressToNext = nextLevel 
+  const progressToNext = nextLevel
     ? ((progress.xp - currentLevel.xpRequired) / (nextLevel.xpRequired - currentLevel.xpRequired)) * 100
     : 100;
 
@@ -90,10 +67,10 @@ export function XPProgress() {
         <div>
           <div className="flex justify-between text-xs text-gray-600 mb-1">
             <span>Level {currentLevel.level}</span>
-            <span>{nextLevel.xpRequired - progress.xp} XP to {nextLevel.name}</span>
+            <span>{Math.max(0, nextLevel.xpRequired - progress.xp)} XP to {nextLevel.name}</span>
           </div>
           <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-            <motion.div 
+            <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${Math.min(progressToNext, 100)}%` }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -105,12 +82,10 @@ export function XPProgress() {
 
       <div className="grid grid-cols-5 gap-1">
         {LEVELS.map((level, index) => (
-          <div 
+          <div
             key={level.level}
             className={`text-center p-2 rounded ${
-              index <= currentLevelIndex 
-                ? 'bg-emerald-100 text-emerald-700' 
-                : 'bg-gray-100 text-gray-400'
+              index <= currentLevelIndex ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-400'
             }`}
           >
             <div className="text-xs font-bold">{level.level}</div>
@@ -123,28 +98,29 @@ export function XPProgress() {
 }
 
 export function addXP(amount: number) {
+  if (typeof window === 'undefined') return null;
   const stored = localStorage.getItem('brickbybrick-progress');
   const current = stored ? JSON.parse(stored) : { xp: 0, level: 1, completedLessons: [] };
-  
-  const newXP = current.xp + amount;
+
+  const newXP = (current.xp ?? 0) + amount;
   const newLevel = getCurrentLevel(newXP).level;
-  
+
   const updated = { ...current, xp: newXP, level: newLevel };
   localStorage.setItem('brickbybrick-progress', JSON.stringify(updated));
-  
-  window.dispatchEvent(new Event('xp-updated'));
-  
+
+  window.dispatchEvent(new CustomEvent('xp-updated', { detail: updated }));
   return updated;
 }
 
 export function markLessonComplete(lessonId: string) {
+  if (typeof window === 'undefined') return false;
   const stored = localStorage.getItem('brickbybrick-progress');
   const current = stored ? JSON.parse(stored) : { xp: 0, level: 1, completedLessons: [] };
-  
-  if (!current.completedLessons.includes(lessonId)) {
+
+  if (!current.completedLessons?.includes(lessonId)) {
     const updated = {
       ...current,
-      completedLessons: [...current.completedLessons, lessonId],
+      completedLessons: [...(current.completedLessons ?? []), lessonId],
     };
     localStorage.setItem('brickbybrick-progress', JSON.stringify(updated));
     window.dispatchEvent(new Event('xp-updated'));

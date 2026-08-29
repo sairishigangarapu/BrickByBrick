@@ -4,6 +4,16 @@ import { supabaseAdmin } from "./supabase";
 
 type ClerkUser = User | null;
 
+const VALID_ROLES = ["user", "admin", "investment_provider", "accredited_investor"] as const;
+type ValidRole = typeof VALID_ROLES[number];
+
+function coerceRole(value: unknown): ValidRole {
+  if (typeof value === "string" && (VALID_ROLES as readonly string[]).includes(value)) {
+    return value as ValidRole;
+  }
+  return "user";
+}
+
 const buildFullName = (user: User): string | null => {
   if (user.fullName) return user.fullName;
   const parts = [user.firstName, user.lastName].filter(Boolean) as string[];
@@ -41,13 +51,17 @@ export async function ensureSupabaseUser(user: ClerkUser) {
       email,
       full_name: buildFullName(user),
       avatar_url: user.imageUrl,
-      role: typeof user.publicMetadata?.role === "string" ? (user.publicMetadata.role as string) : "student",
+      role: coerceRole(user.publicMetadata?.role),
     });
 
     if (insertError) {
       // Ignore duplicate key errors (race condition - user was created between check and insert)
-      if (insertError.code === '23505') {
+      if (insertError.code === "23505") {
         return;
+      }
+      // Surface unexpected errors in dev so we notice them
+      if (process.env.NODE_ENV !== "production") {
+        console.error("[ensureSupabaseUser] insert error:", insertError.message);
       }
     }
   } catch (err) {
