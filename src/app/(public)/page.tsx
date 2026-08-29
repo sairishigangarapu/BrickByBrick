@@ -51,6 +51,8 @@ function formatArticleTime(iso: string): string {
   }
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function LandingPage() {
   // Server-side data reuse — pages call the shared data layer directly instead
   // of HTTP-calling their own API routes. Failures degrade gracefully.

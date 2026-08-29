@@ -6,6 +6,7 @@ import { pickCategoryIdForListing, type NewsArticle } from '@/lib/news-categorie
 
 import { AssetDetailsContent } from './AssetDetailsContent';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
 interface PageProps {
