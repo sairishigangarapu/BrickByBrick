@@ -36,7 +36,10 @@ export function WaitlistForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const formData = new FormData(event.currentTarget)
+    // React nulls `event.currentTarget` after the synchronous handler returns,
+    // so capture the form before any await.
+    const form = event.currentTarget
+    const formData = new FormData(form)
     const name = String(formData.get('name') || '').trim()
     const email = String(formData.get('email') || '').trim()
 
@@ -70,7 +73,7 @@ export function WaitlistForm() {
         /* localStorage unavailable */
       }
 
-      event.currentTarget.reset()
+      form.reset()
       setAlreadySubmitted(true)
       setState({
         loading: false,
