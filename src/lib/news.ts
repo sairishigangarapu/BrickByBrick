@@ -1,5 +1,5 @@
 import 'server-only';
-import { NEWS_CATEGORIES, type NewsArticle, type NewsCategory } from '@/lib/news-categories';
+import { HUB_SECTIONS, NEWS_CATEGORIES, type NewsArticle, type NewsCategory } from '@/lib/news-categories';
 
 export { NEWS_CATEGORIES } from '@/lib/news-categories';
 export type { NewsArticle, NewsCategory } from '@/lib/news-categories';
@@ -200,4 +200,93 @@ export async function getNewsArticles(options?: GetNewsOptions): Promise<NewsArt
 export async function getLatestNews(count: number): Promise<NewsArticle[]> {
   const articles = await getNewsArticles({ perCategory: 4 });
   return articles.slice(0, count);
+}
+
+// ---------------------------------------------------------------------------
+// Learning Hub "Research Hub" sections.
+// SEBI Updates come from SEBI's official RSS feed (verified, keyless):
+// https://www.sebi.gov.in/rss.html -> https://www.sebi.gov.in/sebirss.xml
+// Market Reports and Tax Updates reuse the Google News RSS pipeline above.
+// ---------------------------------------------------------------------------
+
+const SEBI_FEED_URL = 'https://www.sebi.gov.in/sebirss.xml';
+
+// SEBI's pubDates ("01 Sep, 2026 +0530") are not reliably parsed by
+// `new Date`, so extract day/month/year directly.
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+function parseFeedDate(raw: string): string {
+  const direct = new Date(raw);
+  if (!Number.isNaN(direct.getTime())) return direct.toISOString();
+
+  const match = raw.match(/(\d{1,2})\s+([A-Za-z]{3}),?\s+(\d{4})/);
+  if (match) {
+    const monthIndex = MONTHS.indexOf(match[2].toLowerCase());
+    const day = Number(match[1]);
+    const year = Number(match[3]);
+    if (monthIndex !== -1 && day >= 1 && day <= 31) {
+      return new Date(Date.UTC(year, monthIndex, day)).toISOString();
+    }
+  }
+  return new Date(0).toISOString();
+}
+
+async function fetchSebiArticles(limit: number): Promise<NewsArticle[]> {
+  const cached = feedCache.get(SEBI_FEED_URL);
+  if (cached && cached.expires > Date.now()) return cached.articles.slice(0, limit);
+
+  for (let attempt = 0; attempt <= FEED_RETRIES; attempt++) {
+    try {
+      const res = await fetch(SEBI_FEED_URL, {
+        cache: 'no-store',
+        signal: AbortSignal.timeout(FEED_TIMEOUT_MS),
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BrickByBrick/1.0)' },
+      });
+      if (!res.ok) throw new Error(`SEBI feed request failed (${res.status})`);
+      const xml = await res.text();
+
+      const articles: NewsArticle[] = parseRssItems(xml)
+        .slice(0, limit)
+        .map((item, index) => ({
+          id: `sebi-updates-${index}-${Buffer.from(item.link).toString('base64url').slice(0, 24)}`,
+          title: item.title,
+          url: item.link,
+          source: 'SEBI',
+          publishedAt: parseFeedDate(item.pubDate),
+          description: item.description,
+          categoryId: 'sebi-updates',
+        }));
+      if (articles.length > 0) {
+        feedCache.set(SEBI_FEED_URL, { expires: Date.now() + FEED_CACHE_TTL_MS, articles });
+        return articles;
+      }
+      if (attempt === FEED_RETRIES) return [];
+    } catch (error) {
+      console.error(
+        `SEBI feed error attempt ${attempt + 1}:`,
+        error instanceof Error ? error.message : error
+      );
+      if (attempt === FEED_RETRIES) return [];
+    }
+    await new Promise((resolve) => setTimeout(resolve, FEED_RETRY_DELAYS_MS[Math.min(attempt, FEED_RETRY_DELAYS_MS.length - 1)]));
+  }
+  return [];
+}
+
+export interface HubSectionUpdates {
+  id: string;
+  label: string;
+  articles: NewsArticle[];
+}
+
+/** Fetches the latest articles for each Learning Hub section (parallel, cached). */
+export async function getHubUpdates(perSection = 4): Promise<HubSectionUpdates[]> {
+  const sections = await mapWithConcurrency(HUB_SECTIONS, FEED_CONCURRENCY, async (section) => {
+    const articles =
+      section.source === 'sebi'
+        ? await fetchSebiArticles(perSection)
+        : await fetchCategoryArticles(section, perSection);
+    return { id: section.id, label: section.label, articles };
+  });
+  return sections;
 }

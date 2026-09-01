@@ -6,6 +6,11 @@ export interface NewsCategory {
   label: string;
   /** Search query used for the underlying news feed. */
   query: string;
+  /**
+   * Where the articles come from. 'google-news' (default) uses the Google News
+   * RSS pipeline in src/lib/news.ts; 'sebi' uses SEBI's official RSS feed.
+   */
+  source?: 'google-news' | 'sebi';
 }
 
 export interface NewsArticle {
@@ -32,6 +37,28 @@ export const NEWS_CATEGORIES: NewsCategory[] = [
 export function getNewsCategoryLabel(id: string): string {
   return NEWS_CATEGORIES.find((category) => category.id === id)?.label ?? 'Markets';
 }
+
+// Sections for the Learning Hub "Research Hub" cards. Each maps to a verified,
+// free feed: official SEBI RSS (sebi.gov.in/sebirss.xml) for regulatory
+// updates, Google News RSS for market reports and tax news.
+export const HUB_SECTIONS: NewsCategory[] = [
+  {
+    id: 'market-reports',
+    label: 'Market Reports',
+    query: 'India alternative investments market report REIT AIF quarterly',
+  },
+  {
+    id: 'sebi-updates',
+    label: 'SEBI Updates',
+    query: 'SEBI',
+    source: 'sebi',
+  },
+  {
+    id: 'tax-updates',
+    label: 'Tax Updates',
+    query: 'India income tax GST capital gains investor tax rules changes',
+  },
+];
 
 /**
  * Pick the most relevant news category id for a given listing. Used by the

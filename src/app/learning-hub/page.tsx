@@ -4,8 +4,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { formatDistanceToNowStrict } from 'date-fns';
 import { supabase } from '@/lib/supabase';
+import type { NewsArticle } from '@/lib/news-categories';
 
 interface LearningPath {
   id: string;
@@ -24,6 +26,42 @@ interface LearningContent {
   is_published: boolean;
 }
 
+interface HubSection {
+  id: string;
+  label: string;
+  articles: NewsArticle[];
+}
+
+function formatPublishedAt(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime()) || date.getTime() === 0) return '';
+  try {
+    return formatDistanceToNowStrict(date, { addSuffix: true });
+  } catch {
+    return '';
+  }
+}
+
+function HubArticleRow({ article }: { article: NewsArticle }) {
+  const published = formatPublishedAt(article.publishedAt);
+  return (
+    <a
+      href={article.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block text-left py-2 border-b border-zinc-100 last:border-b-0"
+    >
+      <p className="text-sm font-medium leading-snug line-clamp-2 group-hover:text-orange-700 transition-colors">
+        {article.title}
+      </p>
+      <p className="text-[11px] text-gray-500 mt-1">
+        <span className="font-semibold">{article.source}</span>
+        {published && ` · ${published}`}
+      </p>
+    </a>
+  );
+}
+
 export default function LearningHubPage() {
   const [learningPaths, setLearningPaths] = useState<LearningPath[]>([]);
   const [learningContent, setLearningContent] = useState<LearningContent[]>([]);
@@ -31,7 +69,12 @@ export default function LearningHubPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const router = useRouter();
+
+  // Research Hub live feeds (SEBI RSS + Google News). Fetched independently of
+  // the learning-path data so one failing source never blocks the page.
+  const [hubSections, setHubSections] = useState<HubSection[]>([]);
+  const [hubState, setHubState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
   // Fetch learning paths
   useEffect(() => {
@@ -57,6 +100,24 @@ export default function LearningHubPage() {
 
     fetchLearningPaths();
   }, []);
+
+  const loadHubUpdates = useCallback(async () => {
+    setHubState('loading');
+    try {
+      const res = await fetch('/api/learning-hub/updates?perSection=8');
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const data = await res.json();
+      setHubSections(Array.isArray(data?.sections) ? data.sections : []);
+      setHubState('ready');
+    } catch (err) {
+      console.error('Failed to fetch hub updates:', err);
+      setHubState('error');
+    }
+  }, []);
+
+  useEffect(() => {
+    loadHubUpdates();
+  }, [loadHubUpdates]);
 
   // Fetch content for selected path
   useEffect(() => {
@@ -164,49 +225,63 @@ export default function LearningHubPage() {
           </div>
         )}
 
-        {/* Research Hub Section */}
+        {/* Research Hub Section — live feeds: SEBI's official RSS + Google News RSS */}
         <div className="mt-8 pt-12 border-t border-zinc-200">
-          <h2 className="text-2xl font-black uppercase mb-6">Research Hub</h2>
+          <h2 className="text-2xl font-black uppercase mb-2">Research Hub</h2>
+          <p className="text-sm text-gray-500 mb-6">
+            Live updates from verified sources — SEBI (sebi.gov.in) and Google News.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="p-6 text-center">
-              <h4 className="font-medium mb-4">Market Reports</h4>
-              <p className="text-sm text-gray-500">
-                Quarterly and annual market reports on alternative investments
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push('/learning-hub')}
-              >
-                View All
-              </Button>
-            </Card>
-            <Card className="p-6 text-center">
-              <h4 className="font-medium mb-4">SEBI Updates</h4>
-              <p className="text-sm text-gray-500">
-                Latest regulatory updates from SEBI affecting alternative investments
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push('/learning-hub')}
-              >
-                View All
-              </Button>
-            </Card>
-            <Card className="p-6 text-center">
-              <h4 className="font-medium mb-4">Tax Updates</h4>
-              <p className="text-sm text-gray-500">
-                Latest tax changes and implications for investors
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push('/learning-hub')}
-              >
-                View All
-              </Button>
-            </Card>
+            {hubSections.map((section) => {
+              const expanded = expandedSections[section.id];
+              const visibleArticles = expanded ? section.articles : section.articles.slice(0, 4);
+              return (
+                <Card key={section.id} className="p-6">
+                  <h4 className="font-medium mb-1">{section.label}</h4>
+                  <p className="text-xs text-gray-500 mb-3">
+                    {section.id === 'sebi-updates'
+                      ? 'Regulatory updates from SEBI affecting alternative investments'
+                      : section.id === 'market-reports'
+                        ? 'Quarterly and annual market reports on alternative investments'
+                        : 'Latest tax changes and implications for investors'}
+                  </p>
+                  {hubState === 'loading' && (
+                    <p className="text-xs text-gray-400 py-4">Loading updates…</p>
+                  )}
+                  {hubState === 'error' && (
+                    <div className="py-4">
+                      <p className="text-xs text-gray-500 mb-2">Could not load updates right now.</p>
+                      <Button variant="outline" size="sm" onClick={loadHubUpdates}>
+                        Retry
+                      </Button>
+                    </div>
+                  )}
+                  {hubState === 'ready' && visibleArticles.length === 0 && (
+                    <p className="text-xs text-gray-400 py-4">No updates available right now.</p>
+                  )}
+                  {hubState === 'ready' && visibleArticles.length > 0 && (
+                    <>
+                      <div className="mb-3">
+                        {visibleArticles.map((article) => (
+                          <HubArticleRow key={article.id} article={article} />
+                        ))}
+                      </div>
+                      {section.articles.length > 4 && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            setExpandedSections((prev) => ({ ...prev, [section.id]: !prev[section.id] }))
+                          }
+                        >
+                          {expanded ? 'Show Less' : `View All (${section.articles.length})`}
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </Card>
+              );
+            })}
           </div>
         </div>
       </div>
