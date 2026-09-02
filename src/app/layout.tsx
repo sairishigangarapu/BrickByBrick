@@ -57,18 +57,19 @@ export default async function RootLayout({
   const pathname = headersList.get('x-pathname') || headersList.get('x-invoke-path') || '';
   const isLessonPage = /\/student-portal\/learn\/[^/]+\/[^/]+/.test(pathname);
 
-  // Determine navigation items based on user role
-  const navItems = isAdmin ? [
-    { href: '/admin', label: 'Admin', showWhenSignedIn: true },
-  ] : isProvider ? [
-    { href: '/investment-provider', label: 'My Listings', showWhenSignedIn: true },
-    { href: '/marketplace', label: 'Marketplace', showWhenSignedIn: true },
-  ] : [
-    { href: '/marketplace', label: 'Marketplace', showWhenSignedIn: true },
-    { href: '/discover', label: 'Discover', showWhenSignedIn: true },
-    { href: '/learning-hub', label: 'Learning Hub', showWhenSignedIn: true },
-    { href: '/calculators', label: 'Calculators', showWhenSignedIn: true },
-  ];
+  // Navigation: signed-in users always get the public app routes; admins and
+  // providers additionally get their role-specific routes on top.
+  const navItems: { href: string; label: string }[] = [];
+  if (userId) {
+    navItems.push(
+      { href: '/marketplace', label: 'Marketplace' },
+      { href: '/discover', label: 'Discover' },
+      { href: '/learning-hub', label: 'Learning Hub' },
+      { href: '/calculators', label: 'Calculators' },
+    );
+    if (isAdmin) navItems.push({ href: '/admin', label: 'Admin' });
+    if (isProvider) navItems.push({ href: '/investment-provider', label: 'My Listings' });
+  }
 
   return (
     <ClerkProvider>
@@ -86,7 +87,7 @@ export default async function RootLayout({
                 </Link>
                 <nav className="hidden md:flex items-center gap-4 text-sm font-medium">
                   {navItems.map((item, index) => (
-                    <Link key={index} href={item.href} className={item.showWhenSignedIn ? 'hover:text-orange-600' : ''}>
+                    <Link key={index} href={item.href} className="hover:text-orange-600">
                       {item.label}
                     </Link>
                   ))}
@@ -96,12 +97,6 @@ export default async function RootLayout({
                       <Link href="/student-portal/announcements" className="hover:text-orange-600">Announcements</Link>
                       <Link href="/student-portal/profile" className="hover:text-orange-600">Profile</Link>
                     </>
-                  )}
-                  {isAdmin && (
-                    <Link href="/admin" className="font-bold hover:text-orange-600">Admin</Link>
-                  )}
-                  {isProvider && (
-                    <Link href="/investment-provider" className="font-bold hover:text-orange-600">Provider</Link>
                   )}
                 </nav>
               </div>
