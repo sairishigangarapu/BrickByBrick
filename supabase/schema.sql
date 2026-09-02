@@ -502,6 +502,22 @@ CREATE TABLE IF NOT EXISTS lesson_progress (
 
 
 
+-- Certificates registry - issued when a user completes a course
+CREATE TABLE IF NOT EXISTS certificates (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  course_id UUID REFERENCES courses(id) ON DELETE CASCADE,
+  certificate_url TEXT,
+  issued_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_certificates_user ON certificates(user_id);
+CREATE INDEX IF NOT EXISTS idx_certificates_course ON certificates(course_id);
+
+
+
+
 -- ============================================
 -- NOTES/MIGRATION GUIDE
 -- ============================================
