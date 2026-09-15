@@ -1,0 +1,704 @@
+WelNex Website – Major Product Update
+Hi,
+We've pivoted WelNex from a Commercial Real Estate education platform into India's
+AI-powered Alternative Investment Marketplace.
+This is no longer just an educational website. The website should be built as a scalable
+fintech marketplace where investors can discover, compare, understand, research, and
+eventually access alternative investment opportunities through trusted investment
+partners.
+Please read the entire document before starting, as there are significant architecture changes.
+
+Overall Vision
+WelNex should combine the best aspects of:
+
+
+
+
+
+
+Skyscanner (Discovery Marketplace)
+Zerodha Varsity (Education)
+Morningstar (Research & Analytics)
+Product Hunt (Listings)
+AI-powered Portfolio Intelligence
+
+The website should not feel like a blog.
+It should feel like a premium fintech marketplace.
+
+Primary Goals
+The website should allow users to:
+
+
+
+
+
+
+
+
+
+
+Learn about Alternative Investments
+Discover investment opportunities
+Compare investment products
+Understand risks, taxation, and regulations
+Browse investment providers
+Save investments
+Join the waitlist
+Become qualified investment leads
+Eventually invest through regulated partners (future)
+
+Website Navigation
+The navigation should include:
+
+
+
+
+
+
+
+
+
+
+
+
+Home
+Marketplace
+Investment Categories
+Learning Hub
+Compare
+Research
+Calculators
+AI Copilot (Coming Soon)
+News
+About
+Contact
+
+Homepage
+The homepage should immediately communicate that WelNex is an Alternative
+Investment Marketplace.
+Hero Section
+Headline
+India's AI-powered Marketplace for Alternative Investments
+Subheading
+Discover, compare, understand, and access alternative investment opportunities through
+trusted investment partners.
+Buttons
+
+
+
+
+Explore Marketplace
+Start Learning
+Join Waitlist
+
+Below the hero
+Display cards for categories like
+
+
+
+
+REITs
+InvITs
+AIFs
+
+
+
+
+
+
+
+
+
+PMS
+Private Credit
+Corporate Bonds
+Structured Products
+Fractional Real Estate
+Infrastructure
+Gold
+
+Also include
+
+
+
+
+
+
+
+Featured Investments
+Trending Investments
+Recently Added
+Featured Learning Modules
+Marketplace Statistics
+Waitlist CTA
+
+Marketplace (Main Feature)
+This is the most important page.
+Users should browse investments similar to browsing products on Amazon.
+Every investment listing card should display
+
+
+
+
+
+
+
+
+
+
+Investment Name
+Provider
+Category
+Minimum Investment
+Expected Returns
+Risk
+Liquidity
+Investment Horizon
+Regulator
+
+Buttons
+
+
+
+
+
+View Details
+Compare
+Save
+Join Waitlist
+
+Future
+
+
+Invest with Partner
+
+Marketplace should support
+Search
+
+Filters
+Sorting
+Categories
+Featured Listings
+Trending
+Newest
+
+Investment Categories
+Every category should have its own dedicated page.
+Examples
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+REITs
+SM REITs
+InvITs
+Category I AIF
+Category II AIF
+Category III AIF
+PMS
+Private Credit
+Corporate Bonds
+Structured Products
+Infrastructure Investments
+Fractional Commercial Real Estate
+Gold
+Silver
+Global Alternatives
+Cryptocurrency (Educational Only)
+
+Architecture must allow unlimited future categories.
+
+Dynamic Investment Listings (Very Important)
+Every category must support multiple investment listings.
+For example
+REITs
+
+
+
+
+
+
+
+Embassy Office Parks REIT
+Mindspace Business Parks REIT
+Brookfield India REIT
+Nexus Select Trust
+Future REITs
+
+Category II AIF
+
+
+
+
+
+
+
+360 ONE AIF
+Kotak Alternative Fund
+Motilal Oswal AIF
+True North Fund
+Multiples PE Fund
+Future Funds
+
+InvITs
+
+
+
+
+IndiGrid
+PowerGrid InvIT
+IRB InvIT
+
+Every category should work like this.
+The admin should be able to add unlimited listings without any code changes.
+
+Current Requirement
+We are still preparing complete data for all investment products.
+For now,
+Please create the complete architecture.
+Under AIFs, create the listing section with sample/publicly known fund names so the UI is
+complete.
+For REITs, InvITs, PMS, Private Credit, etc., keep the same structure ready.
+We'll provide complete investment data later.
+The developer should NOT hardcode anything.
+Everything should come from the CMS/Admin Panel.
+
+Individual Investment Page
+Every investment listing should have its own page.
+Include
+Overview
+What is it
+How it works
+Who regulates it
+Eligibility
+Minimum investment
+Expected returns
+Historical performance (optional)
+Risk
+Liquidity
+Investment horizon
+Taxation
+Fees
+Pros
+Cons
+FAQs
+Case studies
+Related learning modules
+Download brochure
+Provider information
+Comparison section
+Related investments
+
+Buttons
+
+
+
+
+Save
+Compare
+Join Waitlist
+
+Future
+
+
+Invest with Partner
+
+Investment Comparison Tool
+Allow users to compare multiple investments.
+Example
+REIT
+vs
+InvIT
+vs
+Category II AIF
+vs
+Corporate Bond
+Compare
+
+
+
+
+
+
+
+
+
+Minimum investment
+Expected returns
+Risk
+Liquidity
+Lock-in
+Taxation
+Regulator
+Investment horizon
+
+Allow
+Export PDF
+Share comparison
+
+AI Copilot (Future Ready)
+Create a dedicated page.
+For now display
+Coming Soon
+Future features
+
+
+
+
+
+
+
+Portfolio Analysis
+Diversification Score
+Investment Explainer
+AI Chat
+Investment Comparison
+Research Summary
+
+Button
+Join AI Waitlist
+
+Learning Hub
+Learning Paths
+Beginner
+Intermediate
+Advanced
+Content
+Articles
+Videos
+Courses
+Interactive Modules
+Infographics
+Case Studies
+Downloadable PDFs
+
+Features
+Bookmark
+Continue Learning
+Track Progress
+Completion Certificate
+
+Research Hub
+Include
+Market Reports
+Industry Reports
+Alternative Investment Reports
+SEBI Updates
+Tax Updates
+Whitepapers
+Download Centre
+Quarterly Reports
+Newsletter Archive
+
+News
+Alternative Investment News
+Market Updates
+Fund Launches
+Industry Trends
+Expert Insights
+
+Calculators
+Investment Calculator
+Compound Interest Calculator
+Capital Gains Calculator
+Inflation Calculator
+Portfolio Allocation Calculator
+Diversification Calculator
+Target Corpus Calculator
+
+Waitlist
+The waitlist is extremely important.
+Collect
+Name
+Email
+Phone
+City
+Occupation
+Income Range
+Investment Experience
+Interested Categories
+Investment Amount
+Timeline
+This should feed into the CRM.
+
+User Dashboard
+Users should be able to
+Bookmark Articles
+Save Investments
+View Comparison History
+Track Learning Progress
+Manage Newsletter
+Manage Waitlist
+Recently Viewed
+Future
+Portfolio Tracking
+AI Copilot
+
+Enterprise Page
+Dedicated page for partners.
+Target
+AIF Managers
+REIT Managers
+InvIT Managers
+PMS Providers
+Private Credit Platforms
+Wealth Managers
+Family Offices
+
+Explain
+Why partner with WelNex
+Benefits
+Lead Generation
+Featured Listings
+Sponsored Campaigns
+Analytics
+Marketplace Distribution
+Request Demo
+
+Admin Panel (Very Important)
+Everything should be manageable without code.
+Admin should be able to
+Create Categories
+Create Subcategories
+Add Investment Listings
+Edit Listings
+Delete Listings
+Archive Listings
+Publish/Unpublish Listings
+Mark Featured
+Mark Trending
+Reorder Listings
+Upload Logos
+Upload Images
+
+Upload Brochures
+Upload PDFs
+Manage Blogs
+Manage Courses
+Manage News
+Manage FAQs
+Manage SEO
+Manage Users
+Manage Waitlist
+Bulk Import Listings through Excel/CSV
+No developer should be required whenever a new investment product launches.
+
+Listing Management (Critical)
+Each listing should support
+Basic Information
+
+
+
+
+
+
+
+
+Name
+Category
+Subcategory
+Provider
+Logo
+Banner
+Description
+
+Investment Details
+
+
+
+
+
+
+
+
+
+
+Minimum Investment
+Expected Returns
+Historical Returns
+Risk
+Liquidity
+Lock-in
+Fund Size
+Launch Date
+Asset Class
+
+Regulatory
+
+
+
+
+
+Regulator
+Registration Number
+Category
+Eligibility
+
+Financial
+
+
+
+
+
+Fees
+Taxation
+Exit Load
+Distribution
+
+Marketplace
+
+
+
+
+
+Website
+Download Brochure
+Join Waitlist
+Request Callback
+
+Future
+
+
+Invest with Partner
+
+SEO
+
+
+
+
+URL
+Meta Title
+Meta Description
+
+Search & Filters
+Search entire marketplace.
+Filter by
+Category
+Risk
+Minimum Investment
+Liquidity
+Returns
+Holding Period
+
+Regulator
+Provider
+Asset Type
+Sort
+Trending
+Featured
+Newest
+Highest Returns
+Lowest Investment
+Alphabetical
+
+User Features
+Login
+Bookmarks
+Wishlist
+Comparison
+Downloads
+Learning Progress
+Recently Viewed
+Newsletter
+Notifications
+Waitlist
+
+AI Features (Future)
+Portfolio Analyzer
+Diversification Score
+Investment Explainer
+AI Chat
+Research Summarizer
+Document Analyzer
+Recommendation Engine
+
+SEO
+Every category should generate SEO pages.
+Every investment listing should generate SEO pages.
+Every provider should generate SEO pages.
+Every comparison should generate SEO pages.
+Every glossary term should generate SEO pages.
+Goal:
+Become India's largest SEO repository for Alternative Investments.
+
+Mobile Experience
+Fully responsive.
+Marketplace should feel like an e-commerce application.
+Comparison tables should become swipeable cards.
+Learning experience should feel similar to Zerodha Varsity or Duolingo.
+
+Tech Architecture
+Everything must be modular.
+Categories
+Providers
+Listings
+Courses
+Blogs
+FAQs
+Calculators
+Comparison Tables
+News
+Reports
+should all be dynamic and CMS-driven.
+No hardcoded data.
+
+Future Roadmap (Keep Architecture Ready)
+Although not part of MVP, please build the architecture keeping these future features in
+mind:
+
+
+
+
+
+
+
+
+
+
+AI Investment Copilot
+Investment Partner Integrations
+Portfolio Tracking
+Enterprise Dashboard
+Market Intelligence
+Sponsored Listings
+Premium Membership
+Research Subscription
+AI-powered Recommendations
+
+Final Goal
+The website should not look like a blog or a simple educational platform.
+It should feel like India's premium AI-powered Alternative Investment Marketplace,
+where users can:
+
+
+
+
+
+
+
+
+Learn
+Discover
+Compare
+Research
+Save
+Join Waitlists
+Connect with Investment Providers
+
+and where everything—from investment categories to individual product listings—is
+dynamically managed through the admin panel without requiring code changes.
+
+

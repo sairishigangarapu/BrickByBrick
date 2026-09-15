@@ -1,20 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import SIPCalculator from "@/components/calculators/SIPCalculator";
-import PropertyGoalPlanner from "@/components/calculators/PropertyGoalPlanner";
-import REITDividendCalculator from "@/components/calculators/REITDividendCalculator";
-import FIRECalculator from "@/components/calculators/FIRECalculator";
-import InflationCalculator from "@/components/calculators/InflationCalculator";
-import REITReadinessCalculator from "@/components/calculators/REITReadinessCalculator";
-import RentVsInvestCalculator from "@/components/calculators/RentVsInvestCalculator";
-import NetWorthTracker from "@/components/calculators/NetWorthTracker";
-import RiskProfiler from "@/components/calculators/RiskProfiler";
-import CompoundingCalculator from "@/components/calculators/CompoundingCalculator";
-import AffordabilityCalculator from "@/components/calculators/AffordabilityCalculator";
-import RetirementCorpusCalculator from "@/components/calculators/RetirementCorpusCalculator";
-import RealEstateExposureAnalyzer from "@/components/calculators/RealEstateExposureAnalyzer";
+import React, { useState, lazy, Suspense } from "react";
+import dynamic from "next/dynamic";
 import CalculatorWrapper from "@/components/calculators/shared/CalculatorWrapper";
+
+const SIPCalculator = dynamic(() => import("@/components/calculators/SIPCalculator"), { ssr: false });
+const PropertyGoalPlanner = dynamic(() => import("@/components/calculators/PropertyGoalPlanner"), { ssr: false });
+const REITDividendCalculator = dynamic(() => import("@/components/calculators/REITDividendCalculator"), { ssr: false });
+const FIRECalculator = dynamic(() => import("@/components/calculators/FIRECalculator"), { ssr: false });
+const InflationCalculator = dynamic(() => import("@/components/calculators/InflationCalculator"), { ssr: false });
+const REITReadinessCalculator = dynamic(() => import("@/components/calculators/REITReadinessCalculator"), { ssr: false });
+const RentVsInvestCalculator = dynamic(() => import("@/components/calculators/RentVsInvestCalculator"), { ssr: false });
+const NetWorthTracker = dynamic(() => import("@/components/calculators/NetWorthTracker"), { ssr: false });
+const RiskProfiler = dynamic(() => import("@/components/calculators/RiskProfiler"), { ssr: false });
+const CompoundingCalculator = dynamic(() => import("@/components/calculators/CompoundingCalculator"), { ssr: false });
+const AffordabilityCalculator = dynamic(() => import("@/components/calculators/AffordabilityCalculator"), { ssr: false });
+const RetirementCorpusCalculator = dynamic(() => import("@/components/calculators/RetirementCorpusCalculator"), { ssr: false });
+const RealEstateExposureAnalyzer = dynamic(() => import("@/components/calculators/RealEstateExposureAnalyzer"), { ssr: false });
 
 const calculatorsList = [
   { id: "sip", name: "SIP Calculator", Component: SIPCalculator },
@@ -31,6 +33,10 @@ const calculatorsList = [
   { id: "retirement", name: "Retirement Corpus", Component: RetirementCorpusCalculator },
   { id: "exposure", name: "RE Exposure", Component: RealEstateExposureAnalyzer },
 ];
+
+function CalcSkeleton() {
+  return <div className="animate-pulse space-y-4"><div className="h-64 bg-gray-100 rounded" /></div>;
+}
 
 export default function CalculatorsPage() {
   const [activeCalc, setActiveCalc] = useState(calculatorsList[0].id);
@@ -67,7 +73,9 @@ export default function CalculatorsPage() {
         <div className="w-full lg:w-3/4">
           <div className="bg-white rounded-lg p-4 lg:p-8 shadow-sm border border-gray-200">
             <CalculatorWrapper title={calculatorsList.find(c => c.id === activeCalc)?.name || "Report"}>
-              <ActiveComponent />
+              <Suspense fallback={<CalcSkeleton />}>
+                <ActiveComponent />
+              </Suspense>
             </CalculatorWrapper>
           </div>
         </div>

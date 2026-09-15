@@ -202,6 +202,12 @@ export async function getLatestNews(count: number): Promise<NewsArticle[]> {
   return articles.slice(0, count);
 }
 
+/** Fetch news for a specific category */
+export async function getNewsByCategory(category: string, count: number): Promise<NewsArticle[]> {
+  const articles = await getNewsArticles({ category, perCategory: count });
+  return articles.slice(0, count);
+}
+
 // ---------------------------------------------------------------------------
 // Learning Hub "Research Hub" sections.
 // SEBI Updates come from SEBI's official RSS feed (verified, keyless):

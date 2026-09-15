@@ -158,8 +158,8 @@ export function InvestmentCalculator() {
         </div>
       </div>
 
-      <div className="h-80" style={{ minHeight: '320px' }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full mt-8">
+        <ResponsiveContainer width="100%" height={320}>
           <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis dataKey="year" stroke="#6b7280" fontSize={12} />
