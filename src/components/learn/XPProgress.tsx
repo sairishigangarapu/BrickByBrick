@@ -99,14 +99,14 @@ export function XPProgress({ initialXP = 0, initialLevel = 1 }: { initialXP?: nu
 
 export function addXP(amount: number) {
   if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem('brickbybrick-progress');
+  const stored = localStorage.getItem('welnex-progress');
   const current = stored ? JSON.parse(stored) : { xp: 0, level: 1, completedLessons: [] };
 
   const newXP = (current.xp ?? 0) + amount;
   const newLevel = getCurrentLevel(newXP).level;
 
   const updated = { ...current, xp: newXP, level: newLevel };
-  localStorage.setItem('brickbybrick-progress', JSON.stringify(updated));
+  localStorage.setItem('welnex-progress', JSON.stringify(updated));
 
   window.dispatchEvent(new CustomEvent('xp-updated', { detail: updated }));
   return updated;
@@ -114,7 +114,7 @@ export function addXP(amount: number) {
 
 export function markLessonComplete(lessonId: string) {
   if (typeof window === 'undefined') return false;
-  const stored = localStorage.getItem('brickbybrick-progress');
+  const stored = localStorage.getItem('welnex-progress');
   const current = stored ? JSON.parse(stored) : { xp: 0, level: 1, completedLessons: [] };
 
   if (!current.completedLessons?.includes(lessonId)) {
@@ -122,7 +122,7 @@ export function markLessonComplete(lessonId: string) {
       ...current,
       completedLessons: [...(current.completedLessons ?? []), lessonId],
     };
-    localStorage.setItem('brickbybrick-progress', JSON.stringify(updated));
+    localStorage.setItem('welnex-progress', JSON.stringify(updated));
     window.dispatchEvent(new Event('xp-updated'));
     return true;
   }

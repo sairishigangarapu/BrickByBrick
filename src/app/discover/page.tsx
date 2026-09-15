@@ -410,7 +410,7 @@ export default function DiscoverPage() {
       <footer className="border-t border-gray-200 bg-white py-6 px-6">
         <p className="max-w-7xl mx-auto text-xs text-gray-500">
           News headlines are aggregated from public Google News feeds for informational purposes only and do not
-          constitute investment advice. BrickByBrick is an education and discovery platform.
+          constitute investment advice. WelNex is an education and discovery platform.
         </p>
       </footer>
     </div>

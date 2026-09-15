@@ -22,7 +22,7 @@ export default function WaitlistPage() {
       <div className="max-w-3xl mx-auto px-4 py-20">
         <h1 className="text-4xl font-black mb-3">Join the Waitlist</h1>
         <p className="text-zinc-600 mb-8 max-w-xl">
-          Get early access to the BrickByBrick alternative investment marketplace. We will share platform updates,
+          Get early access to the WelNex alternative investment marketplace. We will share platform updates,
           new asset classes, and learning content as we ship.
         </p>
 

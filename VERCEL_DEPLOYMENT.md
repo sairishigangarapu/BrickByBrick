@@ -1,13 +1,13 @@
 # Vercel Deployment Guide
 
-## 🚀 Deploy BrickByBrick to Vercel
+## 🚀 Deploy WelNex to Vercel
 
 ### Step 1: Connect GitHub Repository
 
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
 2. Click **"Add New..."** → **"Project"**
 3. Select **"Import Git Repository"**
-4. Choose: `sairishigangarapu/BrickByBrick`
+4. Choose: `sairishigangarapu/WelNex`
 5. Click **"Import"**
 
 ### Step 2: Configure Project
@@ -114,7 +114,7 @@ UPLOADTHING_TOKEN=eyJ...
 
 1. In Vercel Dashboard, go to **"Settings"** → **"Domains"**
 2. Click **"Add Domain"**
-3. Enter your domain: `brickbybrick.com`
+3. Enter your domain: `welnex.com`
 4. Follow DNS configuration instructions
 5. Update Clerk allowed domains
 

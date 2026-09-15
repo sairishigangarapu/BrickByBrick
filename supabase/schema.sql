@@ -1,4 +1,4 @@
--- BrickByBrick Alternative Investment Marketplace Database Schema
+-- WelNex Alternative Investment Marketplace Database Schema
 -- Pivot from LMS to fintech marketplace
 
 -- Enable UUID extension
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS waitlist (
   investment_amount NUMERIC(12,2),
   investment_timeline TEXT, -- e.g., "1-3 years", "3-5 years", "5-10 years", "10+ years"
   -- Source tracking
-  source TEXT DEFAULT 'brickbybrick-waitlist',
+  source TEXT DEFAULT 'welnex-waitlist',
   -- GDPR/Privacy
   consent_given BOOLEAN DEFAULT false,
   consent_date TIMESTAMP WITH TIME ZONE,

@@ -21,7 +21,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "BrickByBrick - Alternative Investment Marketplace",
+  title: "WelNex - Alternative Investment Marketplace",
   description: "India's Marketplace for Alternative Investments",
   icons: {
     icon: "/favicon.ico",
@@ -82,8 +82,8 @@ export default async function RootLayout({
             <header className="flex items-center justify-between px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-50">
               <div className="flex items-center gap-6">
                 <Link href="/" className="flex items-center gap-2">
-                  <img src="/icon.png" alt="BrickByBrick Logo" width={32} height={32} className="w-8 h-8" />
-                  <span className="font-bold text-lg">BrickByBrick</span>
+                  <img src="/icon.png" alt="WelNex Logo" width={32} height={32} className="w-8 h-8" />
+                  <span className="font-bold text-lg">WelNex</span>
                 </Link>
                 <nav className="hidden md:flex items-center gap-4 text-sm font-medium">
                   {navItems.map((item, index) => (

@@ -1,10 +1,10 @@
-# BrickByBrick
+# WelNex
 
-A comprehensive Learning Management System (LMS) platform designed for financial education and real estate investment training. BrickByBrick provides institutional-grade tools for course delivery, student management, and educational content distribution.
+A comprehensive Learning Management System (LMS) platform designed for financial education and real estate investment training. WelNex provides institutional-grade tools for course delivery, student management, and educational content distribution.
 
 ## Overview
 
-BrickByBrick is an enterprise-ready LMS built with Next.js 15, enabling financial institutions and educational organizations to deliver comprehensive training programs. The platform features:
+WelNex is an enterprise-ready LMS built with Next.js 15, enabling financial institutions and educational organizations to deliver comprehensive training programs. The platform features:
 
 - **Student Portal** - Course enrollment, lesson tracking, and integrated PDF viewer
 - **Administrative Dashboard** - Complete course management, user administration, and progress analytics
@@ -25,8 +25,8 @@ BrickByBrick is an enterprise-ready LMS built with Next.js 15, enabling financia
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/sairishigangarapu/BrickByBrick.git
-cd BrickByBrick
+git clone https://github.com/sairishigangarapu/WelNex.git
+cd WelNex
 ```
 
 2. Install dependencies:
@@ -76,7 +76,7 @@ Access the application at [http://localhost:3000](http://localhost:3000).
 
 ## Security
 
-BrickByBrick implements enterprise-grade security controls:
+WelNex implements enterprise-grade security controls:
 
 - Row Level Security on all database tables
 - Role-based access control (Administrator/Student)
@@ -102,7 +102,7 @@ BrickByBrick implements enterprise-grade security controls:
 ## Architecture
 
 ```
-BrickByBrick/
+WelNex/
 ├── src/
 │   ├── app/
 │   │   ├── (admin)/              # Administrative interfaces
@@ -198,6 +198,6 @@ For technical assistance:
 
 ## Resources
 
-- Live Application: [https://brickbybrick.vercel.app](https://brickbybrick.vercel.app)
+- Live Application: [https://welnex.vercel.app](https://welnex.vercel.app)
 - Feature Documentation: [FEATURES_GUIDE.md](./FEATURES_GUIDE.md)
 - Security Documentation: [SECURITY.md](./SECURITY.md)

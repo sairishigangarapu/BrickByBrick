@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import nodemailer, { type Transporter } from 'nodemailer';
 
-const ADMIN_EMAIL = 'connect.brickbybrick@gmail.com';
+const ADMIN_EMAIL = 'connect.welnex@gmail.com';
 
 let cachedTransporter: Transporter | null = null;
 function getTransporter(): Transporter | null {
@@ -11,7 +11,7 @@ function getTransporter(): Transporter | null {
   cachedTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'connect.brickbybrick@gmail.com',
+      user: 'connect.welnex@gmail.com',
       pass: process.env.GMAIL_APP_PASSWORD,
     },
   });
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     if (transporter) {
       try {
         await transporter.sendMail({
-          from: 'BrickByBrick <connect.brickbybrick@gmail.com>',
+          from: 'WelNex <connect.welnex@gmail.com>',
           to: ADMIN_EMAIL,
           subject: `Contact: ${subject}`,
           html: `

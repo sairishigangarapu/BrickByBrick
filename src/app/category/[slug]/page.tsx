@@ -31,7 +31,7 @@ export async function generateMetadata(
   }
 
   // Build canonical URL
-  const canonicalUrl = `https://brickbybrick.com/category/${slug}`;
+  const canonicalUrl = `https://welnex.com/category/${slug}`;
 
   // Determine meta keywords based on category type
   let metaKeywords = 'alternative investment,';

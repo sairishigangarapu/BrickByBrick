@@ -81,7 +81,7 @@ export default async function LandingPage() {
       {/* Hero Section */}
       <section className="w-full bg-black text-white">
         <div className="mx-auto w-full max-w-7xl px-5 py-24 md:px-10 md:py-32 flex flex-col items-center text-center">
-          <p className="text-sm font-black uppercase tracking-[0.3em] text-orange-500 mb-6">BrickByBrick</p>
+          <p className="text-sm font-black uppercase tracking-[0.3em] text-orange-500 mb-6">WelNex</p>
           <h1 className="max-w-5xl text-5xl font-black uppercase leading-[1.1] md:text-7xl">
             India's Marketplace for <span className="text-orange-500">Alternative Investments</span>
           </h1>
@@ -336,10 +336,10 @@ export default async function LandingPage() {
         <div className="mx-auto w-full max-w-7xl">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
-              <p className="text-2xl font-black uppercase tracking-[0.3em] text-orange-500 mb-4">BrickByBrick</p>
+              <p className="text-2xl font-black uppercase tracking-[0.3em] text-orange-500 mb-4">WelNex</p>
               <p className="text-zinc-400 max-w-sm mb-6">India's Marketplace for Alternative Investments. Discover, learn, and invest with clarity.</p>
-              <a href="mailto:connect.brickbybrick@gmail.com" className="text-zinc-400 hover:text-white transition-colors">
-                connect.brickbybrick@gmail.com
+              <a href="mailto:connect.welnex@gmail.com" className="text-zinc-400 hover:text-white transition-colors">
+                connect.welnex@gmail.com
               </a>
             </div>
 
@@ -357,16 +357,16 @@ export default async function LandingPage() {
             <div>
               <h4 className="font-bold mb-4 uppercase text-sm tracking-wider">Connect</h4>
               <ul className="space-y-3 text-zinc-400">
-                <li><a href="https://www.linkedin.com/company/brickbybrick-sip/" target="_blank" rel="noreferrer" className="hover:text-white">LinkedIn</a></li>
+                <li><a href="https://www.linkedin.com/company/welnex-sip/" target="_blank" rel="noreferrer" className="hover:text-white">LinkedIn</a></li>
                 <li><a href="https://www.instagram.com/_brick_by.brick_/" target="_blank" rel="noreferrer" className="hover:text-white">Instagram</a></li>
               </ul>
             </div>
           </div>
 
           <div className="flex flex-col gap-4 text-xs text-zinc-600 border-t border-zinc-800 pt-8 md:flex-row md:items-center md:justify-between">
-            <p>© {new Date().getFullYear()} BrickByBrick. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} WelNex. All rights reserved.</p>
             <div className="flex gap-4">
-              <p>BrickByBrick is an education and discovery platform. Not an investment advisor.</p>
+              <p>WelNex is an education and discovery platform. Not an investment advisor.</p>
             </div>
           </div>
         </div>

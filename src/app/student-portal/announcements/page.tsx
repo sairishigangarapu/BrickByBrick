@@ -17,7 +17,7 @@ export default async function StudentAnnouncementsPage() {
   return (
     <div className="container mx-auto px-4 py-16 max-w-3xl">
       <h1 className="text-3xl font-black mb-2">Announcements</h1>
-      <p className="text-zinc-500 text-sm mb-8">Latest broadcasts from the BrickByBrick team.</p>
+      <p className="text-zinc-500 text-sm mb-8">Latest broadcasts from the WelNex team.</p>
 
       {(!announcements || announcements.length === 0) ? (
         <div className="p-12 text-center border border-dashed border-zinc-300 text-zinc-500 text-sm rounded-2xl">

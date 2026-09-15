@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { AlertTriangle, X } from 'lucide-react';
 
-const STORAGE_KEY = 'brickbybrick_disclaimer_accepted';
+const STORAGE_KEY = 'welnex_disclaimer_accepted';
 const BANNER_KEY = 'bbb_investment_disclaimer_dismissed';
 
 type Variant = 'modal' | 'banner';
@@ -54,7 +54,7 @@ export function DisclaimerPopup({ variant = 'modal' }: DisclaimerPopupProps) {
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold mb-1">Investment disclaimer</p>
             <p className="text-xs text-zinc-300 leading-relaxed">
-              Alternative investments carry significant risk, including loss of principal. Information on BrickByBrick is
+              Alternative investments carry significant risk, including loss of principal. Information on WelNex is
               educational and does not constitute financial advice. Always consult a registered advisor.
             </p>
             <button
@@ -100,7 +100,7 @@ export function DisclaimerPopup({ variant = 'modal' }: DisclaimerPopupProps) {
           <CardContent className="pt-6">
             <div className="space-y-4 text-sm text-gray-600 leading-relaxed">
               <p>
-                The information provided on <span className="font-bold text-gray-900">BrickByBrick</span> is for educational and informational purposes only and does not constitute financial, investment, legal, or tax advice.
+                The information provided on <span className="font-bold text-gray-900">WelNex</span> is for educational and informational purposes only and does not constitute financial, investment, legal, or tax advice.
               </p>
               <p>
                 <span className="font-bold text-gray-900">Alternative investments carry significant risks</span>, including the potential loss of principal. These investments are often illiquid and may not be suitable for all investors.

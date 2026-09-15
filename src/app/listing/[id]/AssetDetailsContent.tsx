@@ -134,7 +134,7 @@ export function AssetDetailsContent({ listing, relatedNews }: AssetDetailsConten
         {/* Primary actions */}
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-3" aria-label="Primary actions">
           <a
-            href={`mailto:connect.brickbybrick@gmail.com?subject=${emailSubject}`}
+            href={`mailto:connect.welnex@gmail.com?subject=${emailSubject}`}
             className="flex items-center justify-center gap-2 h-12 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors text-sm uppercase tracking-wider"
           >
             <Mail className="w-4 h-4" aria-hidden="true" /> Access Through Partner

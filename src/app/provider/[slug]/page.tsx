@@ -32,7 +32,7 @@ export async function generateMetadata({
   }
 
   // Build canonical URL
-  const canonicalUrl = `https://brickbybrick.com/provider/${slug}`;
+  const canonicalUrl = `https://welnex.com/provider/${slug}`;
 
   return {
     title: data.name + ' - ' + (data.provider_type || 'Investment Provider'),

@@ -69,7 +69,7 @@ function REITReadinessCalculator() {
     <div className="flex flex-col gap-6 w-full">
 
       <h1 className="text-2xl font-bold mb-4">
-        🏢 BrickByBrick REIT Readiness Score
+        🏢 WelNex REIT Readiness Score
       </h1>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">

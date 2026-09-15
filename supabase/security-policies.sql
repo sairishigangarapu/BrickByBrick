@@ -1,5 +1,5 @@
 -- ============================================
--- SECURITY POLICIES FOR BRICKBYBRICK
+-- SECURITY POLICIES FOR WELNEX
 -- ============================================
 -- Run this in your Supabase SQL Editor AFTER running schema.sql.
 -- This file is idempotent: every CREATE POLICY is preceded by a matching

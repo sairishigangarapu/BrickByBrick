@@ -14,7 +14,7 @@ function isValidEmail(email: string) {
 function validatePayload(payload: Partial<WaitlistPayload>) {
   const name = (payload.name || '').trim();
   const email = (payload.email || '').trim().toLowerCase();
-  const source = (payload.source || 'brickbybrick-waitlist').trim();
+  const source = (payload.source || 'welnex-waitlist').trim();
 
   if (!name || name.length < 2) {
     return { error: 'Please provide a valid name.' };

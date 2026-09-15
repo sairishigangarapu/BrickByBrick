@@ -27,7 +27,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
     <div className="flex min-h-screen bg-brand-surface">
       <aside className="w-64 border-r border-gray-200 bg-white p-6 flex flex-col gap-4 hidden lg:flex fixed h-full z-10">
         <Link href="/admin" className="flex items-center gap-3 mb-6">
-          <Image src="/icon.png" alt="BrickByBrick Logo" width={40} height={40} className="w-10 h-10" />
+          <Image src="/icon.png" alt="WelNex Logo" width={40} height={40} className="w-10 h-10" />
         </Link>
         {navLinks.map(link => (
           <Link 
@@ -54,7 +54,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           <div className="p-4 space-y-1">
             <Link href="/admin" className="flex items-center gap-3 py-3" onClick={() => setMenuOpen(false)}>
               <Image src="/icon.png" alt="Logo" width={32} height={32} className="w-8 h-8" />
-              <span className="font-bold">BrickByBrick</span>
+              <span className="font-bold">WelNex</span>
             </Link>
             <div className="border-t my-2"></div>
             {navLinks.map(link => (

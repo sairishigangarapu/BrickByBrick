@@ -17,7 +17,7 @@ export default function AuthPromptModal({ onClose }: { onClose: () => void }) {
         
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Sign in to download reports</h2>
         <p className="text-gray-600 mb-6">
-          Sign up for a free BrickByBrick account to download unlimited calculator reports, save your progress, and access more exciting features!
+          Sign up for a free WelNex account to download unlimited calculator reports, save your progress, and access more exciting features!
         </p>
         
         <div className="flex flex-col gap-3">

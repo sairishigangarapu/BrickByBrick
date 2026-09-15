@@ -240,7 +240,7 @@ async function fetchSebiArticles(limit: number): Promise<NewsArticle[]> {
       const res = await fetch(SEBI_FEED_URL, {
         cache: 'no-store',
         signal: AbortSignal.timeout(FEED_TIMEOUT_MS),
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BrickByBrick/1.0)' },
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; WelNex/1.0)' },
       });
       if (!res.ok) throw new Error(`SEBI feed request failed (${res.status})`);
       const xml = await res.text();

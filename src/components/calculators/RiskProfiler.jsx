@@ -42,7 +42,7 @@ function RiskProfiler() {
   return (
     <div className="flex flex-col gap-6 w-full">
 
-      <h1 className="text-2xl font-bold mb-4">🎯 BrickByBrick Risk Profiler</h1>
+      <h1 className="text-2xl font-bold mb-4">🎯 WelNex Risk Profiler</h1>
 
       <div className="flex flex-col gap-4 p-6 bg-orange-50 border border-orange-200 rounded-lg mt-6">
 

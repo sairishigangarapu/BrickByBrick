@@ -74,7 +74,7 @@ export function ArticleCard({ article }: { article: NewsArticle }) {
               aria-hidden="true"
             />
             <span className="absolute bottom-2 left-3 text-[10px] font-black uppercase tracking-widest opacity-60">
-              BrickByBrick Markets
+              WelNex Markets
             </span>
           </>
         )}

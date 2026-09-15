@@ -61,7 +61,7 @@ export function CookieConsent() {
           <div className="min-w-0">
             <p className="text-sm font-semibold text-zinc-900">We use cookies</p>
             <p className="text-xs text-zinc-600 leading-relaxed mt-1">
-              BrickByBrick uses essential cookies to run the site. Optional analytics and marketing cookies help us
+              WelNex uses essential cookies to run the site. Optional analytics and marketing cookies help us
               improve the experience. You can change your choice at any time.
             </p>
             {showSettings && (

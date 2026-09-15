@@ -38,7 +38,7 @@ function FIRECalculator() {
   return (
     <div className="flex flex-col gap-6 w-full">
 
-      <h1 className="text-2xl font-bold mb-4">🔥 BrickByBrick FIRE Calculator</h1>
+      <h1 className="text-2xl font-bold mb-4">🔥 WelNex FIRE Calculator</h1>
 
       <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border border-gray-100">
 

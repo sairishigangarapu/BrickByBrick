@@ -4,7 +4,7 @@ Your code is now on GitHub and ready to deploy!
 
 ## ✅ What's Done
 
-- ✅ All code pushed to: https://github.com/sairishigangarapu/BrickByBrick.git
+- ✅ All code pushed to: https://github.com/sairishigangarapu/WelNex.git
 - ✅ Security hardening complete (no console logs, debug routes removed)
 - ✅ RLS policies documented and ready to apply
 - ✅ Comprehensive documentation created
@@ -17,7 +17,7 @@ Your code is now on GitHub and ready to deploy!
 Go to: https://vercel.com/new
 
 1. Click **"Import Git Repository"**
-2. Select: `sairishigangarapu/BrickByBrick`
+2. Select: `sairishigangarapu/WelNex`
 3. Click **"Import"**
 
 ### 2. Add Environment Variables
@@ -74,7 +74,7 @@ This enables all security policies and protects your data.
 
 ## 🔗 Important Links
 
-- **GitHub Repo**: https://github.com/sairishigangarapu/BrickByBrick.git
+- **GitHub Repo**: https://github.com/sairishigangarapu/WelNex.git
 - **Vercel Dashboard**: https://vercel.com/dashboard
 - **Supabase Dashboard**: https://supabase.com/dashboard
 - **Clerk Dashboard**: https://dashboard.clerk.com
