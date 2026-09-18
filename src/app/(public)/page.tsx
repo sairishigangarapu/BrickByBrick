@@ -83,7 +83,7 @@ export default async function LandingPage() {
         <div className="mx-auto w-full max-w-7xl px-5 py-24 md:px-10 md:py-32 flex flex-col items-center text-center">
           <p className="text-sm font-black uppercase tracking-[0.3em] text-orange-500 mb-6">WelNex</p>
           <h1 className="max-w-5xl text-5xl font-black uppercase leading-[1.1] md:text-7xl">
-            India's Marketplace for <span className="text-orange-500">Alternative Investments</span>
+            India's Educational - Discovery Platform for <span className="text-orange-500">Alternative Investments</span>
           </h1>
           <p className="mt-8 max-w-3xl text-lg text-zinc-300 md:text-xl">
             Discover, compare, understand, and access alternative investment opportunities through trusted investment partners.
@@ -337,7 +337,7 @@ export default async function LandingPage() {
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
               <p className="text-2xl font-black uppercase tracking-[0.3em] text-orange-500 mb-4">WelNex</p>
-              <p className="text-zinc-400 max-w-sm mb-6">India's Marketplace for Alternative Investments. Discover, learn, and invest with clarity.</p>
+              <p className="text-zinc-400 max-w-sm mb-6">India's Educational - Discovery Platform for Alternative Investments. Discover, learn, and invest with clarity.</p>
               <a href="mailto:connect.welnex@gmail.com" className="text-zinc-400 hover:text-white transition-colors">
                 connect.welnex@gmail.com
               </a>

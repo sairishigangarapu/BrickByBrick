@@ -22,7 +22,7 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   title: "WelNex - Alternative Investment Marketplace",
-  description: "India's Marketplace for Alternative Investments",
+  description: "India's Educational - Discovery Platform for Alternative Investments",
   icons: {
     icon: "/favicon.ico",
   },
